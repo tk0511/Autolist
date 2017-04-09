@@ -1,0 +1,10 @@
+Function test()
+Dim ww(1 To 20) As Integer
+Dim result As New PageSummery
+Set test = result
+    'records = Range(.Cells(5, 1), .Cells(5, pageWidth))
+    '"内付,外付,内欠,外欠"
+
+    'Next
+    Call setVAL_D
+End Function
