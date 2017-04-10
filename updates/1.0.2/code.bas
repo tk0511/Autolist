@@ -882,4 +882,13 @@ Sub DBRetry()
     Next
 End Sub
 
-
+Sub deleteDBFail()
+    Dim i As Integer
+    i = 1
+    With ThisWorkbook.Sheets("DBFailed")
+        While Len(.Cells(i, 1)) > 0 And .Cells(i, 3).text = "upload failed"
+            If Now - .Cells(i, 4) > 2 Then .rows(i).Delete
+            i = i + 1
+        Wend
+    End With
+End Sub
