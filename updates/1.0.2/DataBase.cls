@@ -11,7 +11,7 @@ Private connection
 
 Public Sub connect(ByVal DataBase As String)
     Set connection = New ADODB.connection
-    connection.ConnectionString = "DRIVER={MySQL ODBC 5.1 Driver}; SERVER=mysql.rdsmk7l09ertw86.rds.bj.baidubce.com; DATABASE=" + DataBase + "; UID=" + ThisWorkbook.DBID() + "; PWD=" + ThisWorkbook.DBPW() + "; OPTION=3"
+    connection.ConnectionString = "DRIVER={MySQL ODBC 5.1 Driver}; SERVER=mysql.rdsmk7l09ertw86.rds.bj.baidubce.com; DATABASE=" + DataBase + "; UID=" + getValue("DBID") + "; PWD=" + getValue("DBPW") + "; OPTION=3"
     connection.Open
 End Sub
 

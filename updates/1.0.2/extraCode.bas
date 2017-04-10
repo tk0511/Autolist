@@ -6,6 +6,7 @@ Sub runExtraCode()
     On Error GoTo reverse
 
     Call code.editOn("值")
+    ThisWorkbook.Sheets("值").Columns("A:C").Hidden = True
     ThisWorkbook.Sheets("值").Cells(39, 1) = "件数列"
     ThisWorkbook.Sheets("值").Cells(39, 2) = 7
     ThisWorkbook.Sheets("值").Cells(40, 1) = "备注列"
@@ -47,8 +48,6 @@ Sub runExtraCode()
     ThisWorkbook.Sheets("样本").Cells(1, 1) = getValue("清单头")
     Call code.editOff("样本")
     
-    Call code.chgValue("v", "1.0.2")
-    Call code.setVAL_D
     Dim colCounter As Integer
     colCounter = 1
     While Len(ThisWorkbook.Sheets("价格").Cells(1, colCounter)) > 0
@@ -58,9 +57,11 @@ Sub runExtraCode()
         colCounter = colCounter + getValue("价格单宽度")
     Wend
 
-    Debug.Print "extra code runed"
+
     Call checkImport
-    
+    Call code.chgValue("v", "1.0.2")
+    Call code.setVAL_D
+    Application.OnTime Now, "ThisWorkbook.checkUpdate"
     Exit Sub
 reverse:
     Call MsgBox("升级失败，退回至上个版本。（正在关闭工作簿，请勿保存）")

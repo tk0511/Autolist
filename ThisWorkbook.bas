@@ -1,15 +1,3 @@
-Function PW() As String
-    PW = ""
-End Function
-
-Function DBID() As String
-    DBID = ""
-End Function
-
-Function DBPW() As String
-    DBPW = ""
-End Function
-
 Private Sub Workbook_Open()
     If Mid(ThisWorkbook.Name, 2, 2) = "备份" Then
         MsgBox ("该表格是备份表格，使用前需要去除文件名中的[备份]字样以保证表格正常工作！")
@@ -39,9 +27,16 @@ End Sub
 
 Sub checkUpdate()
     On Error GoTo subEnd
-    Dim newestVersion As String
-    newestVersion = httpGET("https://raw.githubusercontent.com/tk0511/Autolist/master/Newest").responseText
-    If newerVersion(newestVersion) Then updateTo newestVersion
+    Dim VersionList() As String
+    VersionList = Split(httpGET("https://raw.githubusercontent.com/tk0511/Autolist/master/VersionList").responseText, Chr(10))
+    If newerVersion(VersionList(UBound(VersionList))) Then
+        For i = 0 To UBound(VersionList)
+            If newerVersion(VersionList(i)) Then
+                updateTo VersionList(i)
+                Exit Sub
+            End If
+        Next
+    End If
 subEnd:
 End Sub
 
