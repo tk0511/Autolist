@@ -20,7 +20,7 @@ Private Sub Workbook_Open()
             Call myStatusBar("备份完毕！" & "共删除过期清单" & deletedSheetCounter & "张，保存目录：" & backupPath, 15)
         End If
     End If
-
+    'Call deleteDBFail
     Call checkUpdate
     
 End Sub
