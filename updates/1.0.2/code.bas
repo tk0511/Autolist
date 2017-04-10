@@ -1,3 +1,4 @@
+Attribute VB_Name = "code"
 Public Type People
     Name As String
     cel As String
@@ -21,9 +22,9 @@ Public PRICECOUNTER_V As Boolean
 Sub new_page(Optional ByVal sheetName As String = "", Optional ByVal pageHead_Row As Integer = 1)
     Dim pagehead As String
     pagehead = Cells(1, 1)
-    If Len(pagehead) > 4 And pagehead <> getValue("æ¸…å•å¤´") Then GoTo error_process
+    If Len(pagehead) > 4 And pagehead <> getValue("Çåµ¥Í·") Then GoTo error_process
     If Len(sheetName) <= 0 Then sheetName = ActiveSheet.Name
-    If sheetName = "æ ·æœ¬" Then Exit Sub
+    If sheetName = "Ñù±¾" Then Exit Sub
     Dim destination As String
     
     On Error GoTo error_process
@@ -35,14 +36,14 @@ Sub new_page(Optional ByVal sheetName As String = "", Optional ByVal pageHead_Ro
     Dim sender As People
     Dim receiver As People
     Dim driver As People
-    pageSize = Cells(pageHead_Row, toInt(getValue("æ¸…å•é•¿åº¦åˆ—")))
-    pageWidth = Int(getValue("æ¸…å•å®½åº¦"))
+    pageSize = Cells(pageHead_Row, toInt(getValue("Çåµ¥³¤¶ÈÁĞ")))
+    pageWidth = Int(getValue("Çåµ¥¿í¶È"))
     
     
-    Call myStatusBar("æ­£åœ¨ä¿å­˜æ•°æ®...")
+    Call myStatusBar("ÕıÔÚ±£´æÊı¾İ...")
     If pageSize < 45 Then pageSize = 45
     With Sheets(sheetName)
-        destination = .Cells(1, toInt(getValue("æ¸…å•ç›®çš„åœ°åˆ—")))
+        destination = .Cells(1, toInt(getValue("Çåµ¥Ä¿µÄµØÁĞ")))
         If Len(destination) <= 0 Then destination = sheetName
         .Calculate
         .Range(.Cells(1, 1), .Cells(pageSize, pageWidth)) = .Range(.Cells(1, 1), .Cells(pageSize, pageWidth)).value
@@ -54,33 +55,33 @@ Sub new_page(Optional ByVal sheetName As String = "", Optional ByVal pageHead_Ro
         records = .Range(.Cells(5, 1), .Cells(pageHead_Row + pageSize - 7, pageWidth))
 
         For row = 1 To UBound(records)
-            If records(row, Int(getValue("ä»¶æ•°åˆ—"))) > 0 Then
-                receiver.Name = records(row, Int(getValue("æ”¶è´§äººå§“ååˆ—")))
-                receiver.cel = records(row, Int(getValue("æ”¶è´§äººç”µè¯åˆ—")))
-                receiver.add = records(row, Int(getValue("æ”¶è´§äººåœ°å€åˆ—")))
+            If records(row, Int(getValue("¼şÊıÁĞ"))) > 0 Then
+                receiver.Name = records(row, Int(getValue("ÊÕ»õÈËĞÕÃûÁĞ")))
+                receiver.cel = records(row, Int(getValue("ÊÕ»õÈËµç»°ÁĞ")))
+                receiver.add = records(row, Int(getValue("ÊÕ»õÈËµØÖ·ÁĞ")))
                 receiver.id = ""
-                receiver.lst_linker = records(row, Int(getValue("å‘è´§äººå§“ååˆ—")))
+                receiver.lst_linker = records(row, Int(getValue("·¢»õÈËĞÕÃûÁĞ")))
                 
-                sender.Name = records(row, Int(getValue("å‘è´§äººå§“ååˆ—")))
-                sender.cel = records(row, Int(getValue("å‘è´§äººç”µè¯åˆ—")))
-                sender.add = records(row, Int(getValue("å‘è´§äººåœ°å€åˆ—")))
-                sender.id = records(row, Int(getValue("å‘è´§äººèº«ä»½è¯å·åˆ—")))
-                sender.lst_linker = records(row, Int(getValue("æ”¶è´§äººå§“ååˆ—")))
-                sender.lst_item = records(row, Int(getValue("è´§ç‰©åç§°åˆ—")))
-                sender.lst_pkg = records(row, Int(getValue("åŒ…è£…åˆ—")))
-                If (receiver.cel <> "---" Or receiver.add <> destination) Then Call update_people(destination & "æ”¶è´§äººä¿¡æ¯", receiver)
-                Call update_people(destination & "å‘è´§äººä¿¡æ¯", sender)
+                sender.Name = records(row, Int(getValue("·¢»õÈËĞÕÃûÁĞ")))
+                sender.cel = records(row, Int(getValue("·¢»õÈËµç»°ÁĞ")))
+                sender.add = records(row, Int(getValue("·¢»õÈËµØÖ·ÁĞ")))
+                sender.id = records(row, Int(getValue("·¢»õÈËÉí·İÖ¤ºÅÁĞ")))
+                sender.lst_linker = records(row, Int(getValue("ÊÕ»õÈËĞÕÃûÁĞ")))
+                sender.lst_item = records(row, Int(getValue("»õÎïÃû³ÆÁĞ")))
+                sender.lst_pkg = records(row, Int(getValue("°ü×°ÁĞ")))
+                If (receiver.cel <> "---" Or receiver.add <> destination) Then Call update_people(destination & "ÊÕ»õÈËĞÅÏ¢", receiver)
+                Call update_people(destination & "·¢»õÈËĞÅÏ¢", sender)
             End If
         Next
 
-        driver.Name = .Cells(3, Int(getValue("é©¾é©¶å‘˜å§“ååˆ—"))).value
+        driver.Name = .Cells(3, Int(getValue("¼İÊ»Ô±ĞÕÃûÁĞ"))).value
         driver.cel = "---"
-        driver.add = .Cells(3, Int(getValue("é©¾é©¶å‘˜è½¦ç‰Œåˆ—"))).value
-        Call update_people(destination & "é©¾é©¶å‘˜ä¿¡æ¯", driver)
-        .Cells(2, Int(getValue("å•å·åˆ—"))) = getId
+        driver.add = .Cells(3, Int(getValue("¼İÊ»Ô±³µÅÆÁĞ"))).value
+        Call update_people(destination & "¼İÊ»Ô±ĞÅÏ¢", driver)
+        .Cells(2, Int(getValue("µ¥ºÅÁĞ"))) = getId
 
         'Data Base
-        Call easyTmpPageUploader(records, .Cells(2, Int(getValue("å•å·åˆ—"))), .Cells(3, Int(getValue("æ¸…å•æ—¥æœŸåˆ—"))), driver.Name, driver.add, destination, .Cells(pageHead_Row + pageSize - 5, Int(getValue("æ‚è´¹åˆ—"))), .Cells(pageHead_Row + pageSize - 4, Int(getValue("å¤‡æ³¨åˆ—"))))
+        Call easyTmpPageUploader(records, .Cells(2, Int(getValue("µ¥ºÅÁĞ"))), .Cells(3, Int(getValue("Çåµ¥ÈÕÆÚÁĞ"))), driver.Name, driver.add, destination, .Cells(pageHead_Row + pageSize - 5, Int(getValue("ÔÓ·ÑÁĞ"))), .Cells(pageHead_Row + pageSize - 4, Int(getValue("±¸×¢ÁĞ"))))
 
         If destination = sheetName Or Len(destination) <= 0 Then
             .rows("1:45").Insert
@@ -88,14 +89,14 @@ Sub new_page(Optional ByVal sheetName As String = "", Optional ByVal pageHead_Ro
             .rows(1).RowHeight = 26.25
             .rows(4).RowHeight = 37.5
             .rows("41:44").RowHeight = 15
-            .Cells(1, Val(getValue("æ¸…å•ç›®çš„åœ°åˆ—"))) = sheetName
+            .Cells(1, Val(getValue("Çåµ¥Ä¿µÄµØÁĞ"))) = sheetName
             Call addFormular(sheetName, sheetName)
         Else
             If Not sheet_exist(destination) Then
-                If Not sheet_exist("æ‚å•") Then
-                    Sheets("æ ·æœ¬").Copy Before:=Sheets(Sheets.count)
+                If Not sheet_exist("ÔÓµ¥") Then
+                    Sheets("Ñù±¾").Copy Before:=Sheets(Sheets.count)
                     With ActiveSheet
-                        .Name = "æ‚å•"
+                        .Name = "ÔÓµ¥"
                         .Unprotect
                         .rows("1:46").Delete
                         .button_input.Enabled = False
@@ -103,12 +104,12 @@ Sub new_page(Optional ByVal sheetName As String = "", Optional ByVal pageHead_Ro
                         .button_new_page.Enabled = False
                     End With
                 End If
-                destination = "æ‚å•"
+                destination = "ÔÓµ¥"
             End If
             Dim insert_row As Integer
             Call editOn(destination)
             With Sheets(destination)
-                insert_row = toInt(.Cells(1, toInt(getValue("æ¸…å•é•¿åº¦åˆ—")))) + 1
+                insert_row = toInt(.Cells(1, toInt(getValue("Çåµ¥³¤¶ÈÁĞ")))) + 1
                 .rows(insert_row & ":" & insert_row + pageSize - 1).Insert
                 Sheets(sheetName).Range(Sheets(sheetName).Cells(1, 1), Sheets(sheetName).Cells(pageSize, pageWidth)).Copy .Range(.Cells(insert_row, 1), .Cells(insert_row + pageSize - 1, pageWidth))
                 .rows(insert_row).RowHeight = 26.25
@@ -125,15 +126,15 @@ Sub new_page(Optional ByVal sheetName As String = "", Optional ByVal pageHead_Ro
             Exit Sub
         End If
         
-        .Range(.Cells(.Cells(1, Int(getValue("æ¸…å•é•¿åº¦åˆ—"))) + 1, 1), .Cells(.Cells(1, Int(getValue("æ¸…å•é•¿åº¦åˆ—"))) + pageSize, Int(getValue("æ‰“å°åŒºåŸŸå®½åº¦")))).Select
+        .Range(.Cells(.Cells(1, Int(getValue("Çåµ¥³¤¶ÈÁĞ"))) + 1, 1), .Cells(.Cells(1, Int(getValue("Çåµ¥³¤¶ÈÁĞ"))) + pageSize, Int(getValue("´òÓ¡ÇøÓò¿í¶È")))).Select
     End With
     
     Call editOff(sheetName)
-    Call myStatusBar("åˆ›å»ºæ–°é¡µå®Œæˆ", 5)
+    Call myStatusBar("´´½¨ĞÂÒ³Íê³É", 5)
     Exit Sub
 error_process: Call editOff(sheetName)
     Application.statusbar = False
-    MsgBox ("é”™è¯¯ï¼ï¼ï¼")
+    MsgBox ("´íÎó£¡£¡£¡")
 End Sub
 
 Sub editOn(Optional ByVal sheetName As String = "")
@@ -157,13 +158,13 @@ Sub delete_page(Optional ByVal sheetName As String = "", Optional ByVal pageHead
     If temporary_sheet Then Exit Sub
     Call editOn(sheetName)
     With Sheets(sheetName)
-        pageSize = Val(.Cells(1, Val(getValue("æ¸…å•é•¿åº¦åˆ—"))))
+        pageSize = Val(.Cells(1, Val(getValue("Çåµ¥³¤¶ÈÁĞ"))))
         If pageSize <= 0 Then
-            Call errPrint("delete_page 001", "ç›®æ ‡è¡Œå·å°äºæˆ–ç­‰äºé›¶")
+            Call errPrint("delete_page 001", "Ä¿±êĞĞºÅĞ¡ÓÚ»òµÈÓÚÁã")
             GoTo subEnd
         End If
         If verify Then
-            If (Len(.Cells(1, 1)) >= 0 And (MsgBox("ç¡®è®¤åˆ é™¤ï¼Ÿ", vbYesNo) = vbYes)) Then
+            If (Len(.Cells(1, 1)) >= 0 And (MsgBox("È·ÈÏÉ¾³ı£¿", vbYesNo) = vbYes)) Then
                 .rows(pageHead_Row & ":" & pageSize).Delete
             End If
         Else
@@ -171,7 +172,7 @@ Sub delete_page(Optional ByVal sheetName As String = "", Optional ByVal pageHead
         End If
     End With
     Call editOff(sheetName)
-    Call myStatusBar("æˆåŠŸåˆ é™¤ï¼", 5)
+    Call myStatusBar("³É¹¦É¾³ı£¡", 5)
 subEnd:
 End Sub
 
@@ -184,10 +185,10 @@ Sub export(ByVal pagehead As Integer)
     Dim i As Integer
     Dim str As String
     
-    Call myStatusBar("æ­£åœ¨ç”Ÿæˆ...")
+    Call myStatusBar("ÕıÔÚÉú³É...")
     filepath = Application.ActiveWorkbook.PATH & "\" & "[" & ActiveSheet.Name & "]" & Format(Now, "YYYY_MM_DD_HH_MM_SS") & "_" & ActiveSheet.Cells(pagehead + 1, 11).text & "_" & ActiveSheet.Cells(pagehead, 15).value - 10
     Set filestream = CreateObject("ADODB.Stream")
-    pageWidth = getValue("æ¸…å•å®½åº¦")
+    pageWidth = getValue("Çåµ¥¿í¶È")
     pageSize = Cells(pagehead, pageWidth - 1)
     
     With filestream
@@ -195,7 +196,7 @@ Sub export(ByVal pagehead As Integer)
         .Charset = "UTF-8"
         .Open
 
-        .WriteText "  ç¼–å·ï¼š" & Cells(pagehead + 1, 11), 1
+        .WriteText "  ±àºÅ£º" & Cells(pagehead + 1, 11), 1
         .WriteText Cells(pagehead + pageSize - 6, 1), 1
         .WriteText "", 1
         
@@ -214,16 +215,16 @@ Sub export(ByVal pagehead As Integer)
         .Flush
         .Close
     End With
-    Call myStatusBar("å·²ç”Ÿæˆæ–‡ä»¶ï¼š" & filepath, 5)
+    Call myStatusBar("ÒÑÉú³ÉÎÄ¼ş£º" & filepath, 5)
     Exit Sub
-error_process: MsgBox ("æ–‡ä»¶ç”Ÿæˆé”™è¯¯ï¼ï¼ï¼")
+error_process: MsgBox ("ÎÄ¼şÉú³É´íÎó£¡£¡£¡")
     Application.statusbar = False
 End Sub
 
 
 Sub update_people(ByVal sheetName As String, ByRef data As People)
     If Not sheet_exist(sheetName) Then
-        Call errPrint("update_people 201", "å·¥ä½œè¡¨:" & sheetName & "ä¸å­˜åœ¨")
+        Call errPrint("update_people 201", "¹¤×÷±í:" & sheetName & "²»´æÔÚ")
         Exit Sub
     End If
     Dim Record As People
@@ -249,15 +250,15 @@ Sub update_people(ByVal sheetName As String, ByRef data As People)
 End Sub
 
 Sub new_line(ByVal rows As Integer)
-    If ActiveSheet.Name = "æ ·æœ¬" Then Exit Sub
+    If ActiveSheet.Name = "Ñù±¾" Then Exit Sub
     If rows < 1 Then Exit Sub
     On Error GoTo error_process
     Dim lstrow As Integer
     Dim listwidth As Integer
     Dim arr() As Integer
     
-    listwidth = getValue("æ¸…å•å®½åº¦")
-    lstrow = Cells(1, Val(getValue("æ¸…å•é•¿åº¦åˆ—"))) - 6
+    listwidth = getValue("Çåµ¥¿í¶È")
+    lstrow = Cells(1, Val(getValue("Çåµ¥³¤¶ÈÁĞ"))) - 6
     PRICECOUNTER_V = True
     ActiveSheet.rows(lstrow & ":" & rows + lstrow - 1).Insert
     PRICECOUNTER_V = False
@@ -269,11 +270,11 @@ Sub new_line(ByVal rows As Integer)
         arr(lstrow + i) = lstrow - 4 + i
     Next
     Range("A" & lstrow & ":A" & lstrow + rows) = Application.Transpose(arr)
-    Cells(1, Val(getValue("æ¸…å•é•¿åº¦åˆ—"))) = lstrow + 6 + rows
+    Cells(1, Val(getValue("Çåµ¥³¤¶ÈÁĞ"))) = lstrow + 6 + rows
     
     Exit Sub
 error_process:
-    MsgBox ("é”™è¯¯ï¼ï¼ï¼")
+    MsgBox ("´íÎó£¡£¡£¡")
 End Sub
 
 Function getRow(ByVal value As String, ByVal row As Integer, ByVal sheetName As String, Optional ByVal col As Integer = 1) As Integer
@@ -309,7 +310,7 @@ Function PRICECOUNTER(ByVal receiver As String, ByVal address As String, ByVal i
         Exit Function
     End If
     
-    With Sheets("ä»·æ ¼")
+    With Sheets("¼Û¸ñ")
         i = 0
         Set listhead = .rows(1).Find(sheetName)
         If listhead Is Nothing Then
@@ -323,7 +324,7 @@ Function PRICECOUNTER(ByVal receiver As String, ByVal address As String, ByVal i
         Do
             If Len(receiver) = 0 Then Exit Do
             target_row = target_row + 1
-            target_row = getRow(receiver, target_row, "ä»·æ ¼", pl)
+            target_row = getRow(receiver, target_row, "¼Û¸ñ", pl)
             If target_row > 0 Then
                 Record.address = .Cells(target_row, pl + 1)
                 Record.sender = .Cells(target_row, pl + 2)
@@ -340,7 +341,7 @@ Function PRICECOUNTER(ByVal receiver As String, ByVal address As String, ByVal i
         Do
             If Len(address) = 0 Then Exit Do
             target_row = target_row + 1
-            target_row = getRow(address, target_row, "ä»·æ ¼", pl + 1)
+            target_row = getRow(address, target_row, "¼Û¸ñ", pl + 1)
             If target_row > 0 Then
                 Record.receiver = .Cells(target_row, pl)
                 Record.sender = .Cells(target_row, pl + 2)
@@ -357,7 +358,7 @@ Function PRICECOUNTER(ByVal receiver As String, ByVal address As String, ByVal i
         Do
             If Len(sender) = 0 Then Exit Do
             target_row = target_row + 1
-            target_row = getRow(sender, target_row, "ä»·æ ¼", pl + 2)
+            target_row = getRow(sender, target_row, "¼Û¸ñ", pl + 2)
             If target_row > 0 Then
                 Record.receiver = .Cells(target_row, pl)
                 Record.address = .Cells(target_row, pl + 1)
@@ -374,7 +375,7 @@ Function PRICECOUNTER(ByVal receiver As String, ByVal address As String, ByVal i
         Do
             If Len(item) = 0 Then Exit Do
             target_row = target_row + 1
-            target_row = getRow(item, target_row, "ä»·æ ¼", pl + 3)
+            target_row = getRow(item, target_row, "¼Û¸ñ", pl + 3)
             If target_row > 0 Then
                 Record.receiver = .Cells(target_row, pl)
                 Record.address = .Cells(target_row, pl + 1)
@@ -391,7 +392,7 @@ Function PRICECOUNTER(ByVal receiver As String, ByVal address As String, ByVal i
         Do
             If Len(pkg) = 0 Then Exit Do
             target_row = target_row + 1
-            target_row = getRow(pkg, target_row, "ä»·æ ¼", pl + 4)
+            target_row = getRow(pkg, target_row, "¼Û¸ñ", pl + 4)
             If target_row > 0 Then
                 Record.receiver = .Cells(target_row, pl)
                 Record.address = .Cells(target_row, pl + 1)
@@ -428,9 +429,9 @@ Function priceListExist(Optional ByVal sheetName As String = "") As Boolean
     If Len(sheetName) = 0 Then sheetName = ActiveSheet.Name
     Dim i As Integer
     Dim listwidth As Integer
-    listwidth = getValue("ä»·æ ¼å•å®½åº¦")
+    listwidth = getValue("¼Û¸ñµ¥¿í¶È")
     i = 0
-    With Sheets("ä»·æ ¼")
+    With Sheets("¼Û¸ñ")
         While .Cells(1, i * listwidth + 1) <> sheetName And Len(.Cells(1, i * listwidth + 1)) > 0
             i = i + 1
         Wend
@@ -465,13 +466,13 @@ End Function
 Function setVAL_D() As Boolean
     setVAL_D = False
     Dim valSize As Integer
-    valSize = Val(Sheets("å€¼").Cells(1, 3))
+    valSize = Val(Sheets("Öµ").Cells(1, 3))
 
     If VAL_D Is Nothing Then
         Set VAL_D = CreateObject("Scripting.Dictionary")
         Dim i As Integer
         i = 1
-        With Sheets("å€¼")
+        With Sheets("Öµ")
             .Calculate
             If valSize <= 0 Then
                 Call Err.Raise(vbObjectError + 513, "code.setVAL_D", "Unable to read value sheet")
@@ -500,18 +501,18 @@ Function chgValue(ByVal valName As String, ByVal value As String) As Boolean
         Dim valRow As Integer
         valRow = VAL_D(valName & "row")
         If valRow <= 0 Then GoTo funcEnd
-        With Sheets("å€¼")
-            Call editOn("å€¼")
+        With Sheets("Öµ")
+            Call editOn("Öµ")
             .Cells(valRow, 2) = value
             VAL_D(valName) = value
         End With
     Else
         Dim i As Integer
         'Call errPrint("chgValue 001", "unoptimized item  " & valName)
-        With ThisWorkbook.Sheets("å€¼")
-            i = getRow(valName, 1, "å€¼")
+        With ThisWorkbook.Sheets("Öµ")
+            i = getRow(valName, 1, "Öµ")
             If i > 0 Then
-                Call editOn("å€¼")
+                Call editOn("Öµ")
                 .Cells(i, 2) = value
                 VAL_D(valName) = value
             Else
@@ -522,7 +523,7 @@ Function chgValue(ByVal valName As String, ByVal value As String) As Boolean
     End If
     chgValue = True
 funcEnd:
-    Call editOff("å€¼")
+    Call editOff("Öµ")
 End Function
 
 Sub info_sheet_sort(ByVal sheetName As String)
@@ -541,16 +542,16 @@ End Sub
 Function getId() As String
     Dim id As String
     Dim counter As String
-    id = getValue("å•å·å¤´")
+    id = getValue("µ¥ºÅÍ·")
     id = id & Format(Date, "#")
     
-    If Date <> getValue("ä¸Šæ¬¡åˆ·æ–°æ—¥æœŸ") Then
-        Call chgValue("ä¸Šæ¬¡åˆ·æ–°æ—¥æœŸ", Date)
-        Call chgValue("æ¸…å•è®¡æ•°å™¨", 1)
+    If Date <> getValue("ÉÏ´ÎË¢ĞÂÈÕÆÚ") Then
+        Call chgValue("ÉÏ´ÎË¢ĞÂÈÕÆÚ", Date)
+        Call chgValue("Çåµ¥¼ÆÊıÆ÷", 1)
         id = id & "001"
     Else
-        counter = getValue("æ¸…å•è®¡æ•°å™¨") + 1
-        Call chgValue("æ¸…å•è®¡æ•°å™¨", counter)
+        counter = getValue("Çåµ¥¼ÆÊıÆ÷") + 1
+        Call chgValue("Çåµ¥¼ÆÊıÆ÷", counter)
         id = id & Format(counter, "000")
     End If
     getId = id
@@ -559,7 +560,7 @@ End Function
 Function temporary_sheet(Optional ByVal sheetName As String = "") As Boolean
     If sheetName = "" Then sheetName = ActiveSheet.Name
     With Sheets(sheetName)
-        If .Cells(Int(.Cells(1, Int(getValue("æ¸…å•é•¿åº¦åˆ—")))) + 1, 1) = "ä¸´æ—¶æ¸…å•" Or .Name = "æ‚å•" Then
+        If .Cells(Int(.Cells(1, Int(getValue("Çåµ¥³¤¶ÈÁĞ")))) + 1, 1) = "ÁÙÊ±Çåµ¥" Or .Name = "ÔÓµ¥" Then
             temporary_sheet = True
         Else
             temporary_sheet = False
@@ -572,25 +573,25 @@ Sub createPriceList(ByVal listName As String)
         Call errPrint("createPriceList 001", "Empty list name")
         GoTo subEnd
     End If
-    With Sheets("ä»·æ ¼")
+    With Sheets("¼Û¸ñ")
         Dim i As Integer
         Dim listwidth As Integer
-        listwidth = getValue("ä»·æ ¼å•å®½åº¦")
+        listwidth = getValue("¼Û¸ñµ¥¿í¶È")
         i = 0
-        Call editOn("ä»·æ ¼")
+        Call editOn("¼Û¸ñ")
         While .Cells(1, i * listwidth + 1) <> ""
             i = i + 1
         Wend
-        Sheets("ä»·æ ¼æ ·æœ¬").Range(Sheets("ä»·æ ¼æ ·æœ¬").Columns(1), Sheets("ä»·æ ¼æ ·æœ¬").Columns(listwidth)).Copy .Cells(1, i * listwidth + 1)
+        Sheets("¼Û¸ñÑù±¾").Range(Sheets("¼Û¸ñÑù±¾").Columns(1), Sheets("¼Û¸ñÑù±¾").Columns(listwidth)).Copy .Cells(1, i * listwidth + 1)
         .Cells(1, i * listwidth + 1) = listName
-        Call editOff("ä»·æ ¼")
+        Call editOff("¼Û¸ñ")
     End With
 subEnd:
 End Sub
 
 Function isNewMonth() As Boolean
     isNewMonth = False
-    If Year(Now) > Year(getValue("ä¸Šæ¬¡å¤‡ä»½æ—¥æœŸ")) Or Month(Now) > Month(getValue("ä¸Šæ¬¡å¤‡ä»½æ—¥æœŸ")) Then
+    If Year(Now) > Year(getValue("ÉÏ´Î±¸·İÈÕÆÚ")) Or Month(Now) > Month(getValue("ÉÏ´Î±¸·İÈÕÆÚ")) Then
         isNewMonth = True
     End If
 End Function
@@ -604,30 +605,30 @@ Sub createMonthlyRecord(ByRef PATH As String)
     newWorkbookName = ActiveWorkbook.Name
     colCounter = 1
     sheetsCounter = 1
-    specialSheet = sheet_exist("æ‚å•")
-    While Len(ThisWorkbook.Sheets("ä»·æ ¼").Cells(1, colCounter)) > 0 Or specialSheet
+    specialSheet = sheet_exist("ÔÓµ¥")
+    While Len(ThisWorkbook.Sheets("¼Û¸ñ").Cells(1, colCounter)) > 0 Or specialSheet
         Dim sheetName As String
         Dim copyRowStart As Integer
         Dim copyRowEnd As Integer
         If specialSheet Then
-                sheetName = "æ‚å•"
+                sheetName = "ÔÓµ¥"
                 specialSheet = False
-                colCounter = 1 - Int(getValue("ä»·æ ¼å•å®½åº¦"))
+                colCounter = 1 - Int(getValue("¼Û¸ñµ¥¿í¶È"))
         Else
-            sheetName = ThisWorkbook.Sheets("ä»·æ ¼").Cells(1, colCounter)
+            sheetName = ThisWorkbook.Sheets("¼Û¸ñ").Cells(1, colCounter)
         End If
         copyRowStart = 1
         With ThisWorkbook.Sheets(sheetName)
         
             Dim pageSize As Integer
-            pageSize = .Cells(copyRowStart, Int(getValue("æ¸…å•é•¿åº¦åˆ—")))
+            pageSize = .Cells(copyRowStart, Int(getValue("Çåµ¥³¤¶ÈÁĞ")))
             If pageSize > 0 Then
-                While Int(.Cells(copyRowStart, Int(getValue("æ¸…å•é•¿åº¦åˆ—")))) > 0 And .Cells(copyRowStart + 2, Int(getValue("æ¸…å•æ—¥æœŸåˆ—"))) >= DateSerial(Year(Date), Month(Date), 1)
-                    copyRowStart = copyRowStart + Int(.Cells(copyRowStart, Int(getValue("æ¸…å•é•¿åº¦åˆ—"))))
+                While Int(.Cells(copyRowStart, Int(getValue("Çåµ¥³¤¶ÈÁĞ")))) > 0 And .Cells(copyRowStart + 2, Int(getValue("Çåµ¥ÈÕÆÚÁĞ"))) >= DateSerial(Year(Date), Month(Date), 1)
+                    copyRowStart = copyRowStart + Int(.Cells(copyRowStart, Int(getValue("Çåµ¥³¤¶ÈÁĞ"))))
                 Wend
                 copyRowEnd = copyRowStart
-                While Int(.Cells(copyRowEnd, Int(getValue("æ¸…å•é•¿åº¦åˆ—")))) > 0 And .Cells(copyRowEnd + 2, Int(getValue("æ¸…å•æ—¥æœŸåˆ—"))) >= DateSerial(Year(Date), Month(Date) - 1, 1)
-                    copyRowEnd = copyRowEnd + Int(.Cells(copyRowEnd, Int(getValue("æ¸…å•é•¿åº¦åˆ—"))))
+                While Int(.Cells(copyRowEnd, Int(getValue("Çåµ¥³¤¶ÈÁĞ")))) > 0 And .Cells(copyRowEnd + 2, Int(getValue("Çåµ¥ÈÕÆÚÁĞ"))) >= DateSerial(Year(Date), Month(Date) - 1, 1)
+                    copyRowEnd = copyRowEnd + Int(.Cells(copyRowEnd, Int(getValue("Çåµ¥³¤¶ÈÁĞ"))))
                 Wend
                 copyRowEnd = copyRowEnd - 1
             End If
@@ -635,7 +636,7 @@ Sub createMonthlyRecord(ByRef PATH As String)
             If Workbooks(newWorkbookName).Sheets.count < sheetsCounter Then Workbooks(newWorkbookName).Sheets.add After:=Workbooks(newWorkbookName).Sheets(Workbooks(newWorkbookName).Sheets.count)
             If copyRowEnd - copyRowStart > 1 Then
                 Dim counter As Integer
-                counter = Int(getValue("æ¸…å•å®½åº¦"))
+                counter = Int(getValue("Çåµ¥¿í¶È"))
                 .rows(copyRowStart & ":" & copyRowEnd).Copy
                 Workbooks(newWorkbookName).Sheets(sheetsCounter).Paste
                 While counter > 0
@@ -647,25 +648,25 @@ Sub createMonthlyRecord(ByRef PATH As String)
         End With
         Workbooks(newWorkbookName).Sheets(sheetsCounter).Name = sheetName
         sheetsCounter = sheetsCounter + 1
-        colCounter = colCounter + Int(getValue("ä»·æ ¼å•å®½åº¦"))
+        colCounter = colCounter + Int(getValue("¼Û¸ñµ¥¿í¶È"))
     Wend
-    Workbooks(newWorkbookName).SaveAs fileName:=PATH & "\(" & MonthName(Month(Date) - 1) & ")" & "æœ¬æœˆè¿å•.xlsx", FileFormat:=xlOpenXMLWorkbook, CreateBackup:=False
-    Workbooks("(" & MonthName(Month(Date) - 1) & ")" & "æœ¬æœˆè¿å•.xlsx").Close
+    Workbooks(newWorkbookName).SaveAs fileName:=PATH & "\(" & MonthName(Month(Date) - 1) & ")" & "±¾ÔÂÔËµ¥.xlsx", FileFormat:=xlOpenXMLWorkbook, CreateBackup:=False
+    Workbooks("(" & MonthName(Month(Date) - 1) & ")" & "±¾ÔÂÔËµ¥.xlsx").Close
 End Sub
 
 Sub deleteExpiredData(ByRef deletedSheetCounter As Integer)
     Dim specialSheet As Boolean
     Dim colCounter As Integer
     colCounter = 1
-    specialSheet = sheet_exist("æ‚å•")
+    specialSheet = sheet_exist("ÔÓµ¥")
     deletedSheetCounter = 0
-    While Len(ThisWorkbook.Sheets("ä»·æ ¼").Cells(1, colCounter)) > 0 Or specialSheet
+    While Len(ThisWorkbook.Sheets("¼Û¸ñ").Cells(1, colCounter)) > 0 Or specialSheet
         If specialSheet Then
-                sheetName = "æ‚å•"
+                sheetName = "ÔÓµ¥"
                 specialSheet = False
-                colCounter = 1 - Int(getValue("ä»·æ ¼å•å®½åº¦"))
+                colCounter = 1 - Int(getValue("¼Û¸ñµ¥¿í¶È"))
         Else
-            sheetName = ThisWorkbook.Sheets("ä»·æ ¼").Cells(1, colCounter)
+            sheetName = ThisWorkbook.Sheets("¼Û¸ñ").Cells(1, colCounter)
         End If
         With ThisWorkbook.Sheets(sheetName)
         
@@ -673,14 +674,14 @@ Sub deleteExpiredData(ByRef deletedSheetCounter As Integer)
             Dim delRowEnd As Integer
             Dim pageSize As Integer
             delRowStart = 1
-            pageSize = .Cells(delRowStart, Int(getValue("æ¸…å•é•¿åº¦åˆ—")))
+            pageSize = .Cells(delRowStart, Int(getValue("Çåµ¥³¤¶ÈÁĞ")))
             
-            While Int(.Cells(delRowStart, Int(getValue("æ¸…å•é•¿åº¦åˆ—")))) > 0 And .Cells(delRowStart + 2, Int(getValue("æ¸…å•æ—¥æœŸåˆ—"))) >= DateSerial(Year(Date), Month(Date) - Int(getValue("æ¸…å•ä¿ç•™æœˆæ•°")), 1)
-                delRowStart = delRowStart + Int(.Cells(delRowStart, Int(getValue("æ¸…å•é•¿åº¦åˆ—"))))
+            While Int(.Cells(delRowStart, Int(getValue("Çåµ¥³¤¶ÈÁĞ")))) > 0 And .Cells(delRowStart + 2, Int(getValue("Çåµ¥ÈÕÆÚÁĞ"))) >= DateSerial(Year(Date), Month(Date) - Int(getValue("Çåµ¥±£ÁôÔÂÊı")), 1)
+                delRowStart = delRowStart + Int(.Cells(delRowStart, Int(getValue("Çåµ¥³¤¶ÈÁĞ"))))
             Wend
             delRowEnd = delRowStart
-            While Int(.Cells(delRowEnd, Int(getValue("æ¸…å•é•¿åº¦åˆ—")))) > 0
-                delRowEnd = delRowEnd + Int(.Cells(delRowEnd, Int(getValue("æ¸…å•é•¿åº¦åˆ—"))))
+            While Int(.Cells(delRowEnd, Int(getValue("Çåµ¥³¤¶ÈÁĞ")))) > 0
+                delRowEnd = delRowEnd + Int(.Cells(delRowEnd, Int(getValue("Çåµ¥³¤¶ÈÁĞ"))))
                 deletedSheetCounter = deletedSheetCounter + 1
             Wend
             delRowEnd = delRowEnd - 1
@@ -694,35 +695,35 @@ Sub deleteExpiredData(ByRef deletedSheetCounter As Integer)
             
         End With
         sheetsCounter = sheetsCounter + 1
-        colCounter = colCounter + Int(getValue("ä»·æ ¼å•å®½åº¦"))
+        colCounter = colCounter + Int(getValue("¼Û¸ñµ¥¿í¶È"))
     Wend
     Application.DisplayAlerts = False
-    If sheet_exist("æ‚å•") Then If Len(ThisWorkbook.Sheets("æ‚å•").Cells(1, Int(getValue("æ¸…å•é•¿åº¦åˆ—")))) = 0 Then ThisWorkbook.Sheets("æ‚å•").Delete
+    If sheet_exist("ÔÓµ¥") Then If Len(ThisWorkbook.Sheets("ÔÓµ¥").Cells(1, Int(getValue("Çåµ¥³¤¶ÈÁĞ")))) = 0 Then ThisWorkbook.Sheets("ÔÓµ¥").Delete
     Application.DisplayAlerts = True
 End Sub
 
 
 Sub addFormular(ByVal sheetName As String, ByVal destination As String)
 With Sheets(sheetName)
-    .Cells(3, Val(getValue("é©¾é©¶å‘˜è½¦ç‰Œåˆ—"))).Formula = Replace(getValue("é©¾é©¶å‘˜è½¦ç‰Œå…¬å¼"), "__DESTINATION__", destination)
-    .Cells(5, Val(getValue("æ”¶è´§äººç”µè¯åˆ—"))).Formula = Replace(getValue("æ”¶è´§äººç”µè¯å…¬å¼"), "__DESTINATION__", destination)
-    .Cells(5, Val(getValue("æ”¶è´§äººç”µè¯åˆ—"))).AutoFill destination:=.Range(.Cells(5, Val(getValue("æ”¶è´§äººç”µè¯åˆ—"))), .Cells(39, Val(getValue("æ”¶è´§äººç”µè¯åˆ—")))), Type:=xlFillValues
-    .Cells(5, Val(getValue("æ”¶è´§äººåœ°å€åˆ—"))).Formula = Replace(getValue("æ”¶è´§äººåœ°å€å…¬å¼"), "__DESTINATION__", destination)
-    .Cells(5, Val(getValue("æ”¶è´§äººåœ°å€åˆ—"))).AutoFill destination:=.Range(.Cells(5, Val(getValue("æ”¶è´§äººåœ°å€åˆ—"))), .Cells(39, Val(getValue("æ”¶è´§äººåœ°å€åˆ—")))), Type:=xlFillValues
+    .Cells(3, Val(getValue("¼İÊ»Ô±³µÅÆÁĞ"))).Formula = Replace(getValue("¼İÊ»Ô±³µÅÆ¹«Ê½"), "__DESTINATION__", destination)
+    .Cells(5, Val(getValue("ÊÕ»õÈËµç»°ÁĞ"))).Formula = Replace(getValue("ÊÕ»õÈËµç»°¹«Ê½"), "__DESTINATION__", destination)
+    .Cells(5, Val(getValue("ÊÕ»õÈËµç»°ÁĞ"))).AutoFill destination:=.Range(.Cells(5, Val(getValue("ÊÕ»õÈËµç»°ÁĞ"))), .Cells(39, Val(getValue("ÊÕ»õÈËµç»°ÁĞ")))), Type:=xlFillValues
+    .Cells(5, Val(getValue("ÊÕ»õÈËµØÖ·ÁĞ"))).Formula = Replace(getValue("ÊÕ»õÈËµØÖ·¹«Ê½"), "__DESTINATION__", destination)
+    .Cells(5, Val(getValue("ÊÕ»õÈËµØÖ·ÁĞ"))).AutoFill destination:=.Range(.Cells(5, Val(getValue("ÊÕ»õÈËµØÖ·ÁĞ"))), .Cells(39, Val(getValue("ÊÕ»õÈËµØÖ·ÁĞ")))), Type:=xlFillValues
     
-    .Cells(5, Val(getValue("è´§ç‰©åç§°åˆ—"))).Formula = Replace(getValue("è´§ç‰©åç§°å…¬å¼"), "__DESTINATION__", destination)
-    .Cells(5, Val(getValue("è´§ç‰©åç§°åˆ—"))).AutoFill destination:=.Range(.Cells(5, Val(getValue("è´§ç‰©åç§°åˆ—"))), .Cells(39, Val(getValue("è´§ç‰©åç§°åˆ—")))), Type:=xlFillValues
-    .Cells(5, Val(getValue("åŒ…è£…åˆ—"))).Formula = Replace(getValue("åŒ…è£…å…¬å¼"), "__DESTINATION__", destination)
-    .Cells(5, Val(getValue("åŒ…è£…åˆ—"))).AutoFill destination:=.Range(.Cells(5, Val(getValue("åŒ…è£…åˆ—"))), .Cells(39, Val(getValue("åŒ…è£…åˆ—")))), Type:=xlFillValues
+    .Cells(5, Val(getValue("»õÎïÃû³ÆÁĞ"))).Formula = Replace(getValue("»õÎïÃû³Æ¹«Ê½"), "__DESTINATION__", destination)
+    .Cells(5, Val(getValue("»õÎïÃû³ÆÁĞ"))).AutoFill destination:=.Range(.Cells(5, Val(getValue("»õÎïÃû³ÆÁĞ"))), .Cells(39, Val(getValue("»õÎïÃû³ÆÁĞ")))), Type:=xlFillValues
+    .Cells(5, Val(getValue("°ü×°ÁĞ"))).Formula = Replace(getValue("°ü×°¹«Ê½"), "__DESTINATION__", destination)
+    .Cells(5, Val(getValue("°ü×°ÁĞ"))).AutoFill destination:=.Range(.Cells(5, Val(getValue("°ü×°ÁĞ"))), .Cells(39, Val(getValue("°ü×°ÁĞ")))), Type:=xlFillValues
     
-    .Cells(5, Val(getValue("å‘è´§äººå§“ååˆ—"))).Formula = Replace(getValue("å‘è´§äººå§“åå…¬å¼"), "__DESTINATION__", destination)
-    .Cells(5, Val(getValue("å‘è´§äººå§“ååˆ—"))).AutoFill destination:=.Range(.Cells(5, Val(getValue("å‘è´§äººå§“ååˆ—"))), .Cells(39, Val(getValue("å‘è´§äººå§“ååˆ—")))), Type:=xlFillValues
-    .Cells(5, Val(getValue("å‘è´§äººç”µè¯åˆ—"))).Formula = Replace(getValue("å‘è´§äººç”µè¯å…¬å¼"), "__DESTINATION__", destination)
-    .Cells(5, Val(getValue("å‘è´§äººç”µè¯åˆ—"))).AutoFill destination:=.Range(.Cells(5, Val(getValue("å‘è´§äººç”µè¯åˆ—"))), .Cells(39, Val(getValue("å‘è´§äººç”µè¯åˆ—")))), Type:=xlFillValues
-    .Cells(5, Val(getValue("å‘è´§äººåœ°å€åˆ—"))).Formula = Replace(getValue("å‘è´§äººåœ°å€å…¬å¼"), "__DESTINATION__", destination)
-    .Cells(5, Val(getValue("å‘è´§äººåœ°å€åˆ—"))).AutoFill destination:=.Range(.Cells(5, Val(getValue("å‘è´§äººåœ°å€åˆ—"))), .Cells(39, Val(getValue("å‘è´§äººåœ°å€åˆ—")))), Type:=xlFillValues
-    .Cells(5, Val(getValue("å‘è´§äººèº«ä»½è¯å·åˆ—"))).Formula = Replace(getValue("å‘è´§äººèº«ä»½è¯å·å…¬å¼"), "__DESTINATION__", destination)
-    .Cells(5, Val(getValue("å‘è´§äººèº«ä»½è¯å·åˆ—"))).AutoFill destination:=.Range(.Cells(5, Val(getValue("å‘è´§äººèº«ä»½è¯å·åˆ—"))), .Cells(39, Val(getValue("å‘è´§äººèº«ä»½è¯å·åˆ—")))), Type:=xlFillValues
+    .Cells(5, Val(getValue("·¢»õÈËĞÕÃûÁĞ"))).Formula = Replace(getValue("·¢»õÈËĞÕÃû¹«Ê½"), "__DESTINATION__", destination)
+    .Cells(5, Val(getValue("·¢»õÈËĞÕÃûÁĞ"))).AutoFill destination:=.Range(.Cells(5, Val(getValue("·¢»õÈËĞÕÃûÁĞ"))), .Cells(39, Val(getValue("·¢»õÈËĞÕÃûÁĞ")))), Type:=xlFillValues
+    .Cells(5, Val(getValue("·¢»õÈËµç»°ÁĞ"))).Formula = Replace(getValue("·¢»õÈËµç»°¹«Ê½"), "__DESTINATION__", destination)
+    .Cells(5, Val(getValue("·¢»õÈËµç»°ÁĞ"))).AutoFill destination:=.Range(.Cells(5, Val(getValue("·¢»õÈËµç»°ÁĞ"))), .Cells(39, Val(getValue("·¢»õÈËµç»°ÁĞ")))), Type:=xlFillValues
+    .Cells(5, Val(getValue("·¢»õÈËµØÖ·ÁĞ"))).Formula = Replace(getValue("·¢»õÈËµØÖ·¹«Ê½"), "__DESTINATION__", destination)
+    .Cells(5, Val(getValue("·¢»õÈËµØÖ·ÁĞ"))).AutoFill destination:=.Range(.Cells(5, Val(getValue("·¢»õÈËµØÖ·ÁĞ"))), .Cells(39, Val(getValue("·¢»õÈËµØÖ·ÁĞ")))), Type:=xlFillValues
+    .Cells(5, Val(getValue("·¢»õÈËÉí·İÖ¤ºÅÁĞ"))).Formula = Replace(getValue("·¢»õÈËÉí·İÖ¤ºÅ¹«Ê½"), "__DESTINATION__", destination)
+    .Cells(5, Val(getValue("·¢»õÈËÉí·İÖ¤ºÅÁĞ"))).AutoFill destination:=.Range(.Cells(5, Val(getValue("·¢»õÈËÉí·İÖ¤ºÅÁĞ"))), .Cells(39, Val(getValue("·¢»õÈËÉí·İÖ¤ºÅÁĞ")))), Type:=xlFillValues
 End With
 End Sub
 
@@ -732,24 +733,24 @@ Sub updateIdList(ByRef id_dict As Object)
     Dim maxId As Long
     maxId = 31
     
-    If Sheets("ä»·æ ¼").rows("1").Find(ActiveSheet.Name) Is Nothing Then
+    If Sheets("¼Û¸ñ").rows("1").Find(ActiveSheet.Name) Is Nothing Then
         Call errPrint("000", "updateIdList")
         Exit Sub
     End If
     
     If Not id_dict Is Nothing Then id_dict.RemoveAll
     Set id_dict = CreateObject("Scripting.Dictionary")
-    If Len(Cells(2, Int(getValue("å•å·åˆ—")))) = 0 Then
-        idRow = 2 + Val(Cells(1, Int(getValue("æ¸…å•é•¿åº¦åˆ—"))))
+    If Len(Cells(2, Int(getValue("µ¥ºÅÁĞ")))) = 0 Then
+        idRow = 2 + Val(Cells(1, Int(getValue("Çåµ¥³¤¶ÈÁĞ"))))
     Else
         idRow = 2
     End If
     
     Do While maxId > 0
-        id = Cells(idRow, Int(getValue("å•å·åˆ—")))
+        id = Cells(idRow, Int(getValue("µ¥ºÅÁĞ")))
         If Len(id) > 0 Then
-            If Cells(idRow - 1, 1) = getValue("æ¸…å•å¤´") Then id_dict(Cells(idRow, Int(getValue("å•å·åˆ—"))).text) = idRow - 1
-            idRow = idRow + Val(Cells(idRow - 1, Int(getValue("æ¸…å•é•¿åº¦åˆ—")))) 'format
+            If Cells(idRow - 1, 1) = getValue("Çåµ¥Í·") Then id_dict(Cells(idRow, Int(getValue("µ¥ºÅÁĞ"))).text) = idRow - 1
+            idRow = idRow + Val(Cells(idRow - 1, Int(getValue("Çåµ¥³¤¶ÈÁĞ")))) 'format
         Else
             Exit Do
         End If
@@ -763,26 +764,26 @@ Sub hidePage(Optional ByVal sheetName As String = "", Optional ByVal pageHead_Ro
     If temporary_sheet Or pageHead_Row = 1 Then Exit Sub
     Call editOn(sheetName)
     With Sheets(sheetName)
-        pageSize = Val(.Cells(pageHead_Row, Val(getValue("æ¸…å•é•¿åº¦åˆ—"))))
+        pageSize = Val(.Cells(pageHead_Row, Val(getValue("Çåµ¥³¤¶ÈÁĞ"))))
         If pageSize <= 0 Then
-            Call errPrint("delete_page 001", "ç›®æ ‡è¡Œå·å°äºæˆ–ç­‰äºé›¶")
+            Call errPrint("delete_page 001", "Ä¿±êĞĞºÅĞ¡ÓÚ»òµÈÓÚÁã")
             GoTo subEnd
         End If
         
-        With .Range(.Cells(pageHead_Row, 1), .Cells(pageHead_Row + pageSize - 1, Int(getValue("æ¸…å•å®½åº¦")))).Interior
+        With .Range(.Cells(pageHead_Row, 1), .Cells(pageHead_Row + pageSize - 1, Int(getValue("Çåµ¥¿í¶È")))).Interior
             .Pattern = xlLightDown
             .PatternColor = 255
             .ColorIndex = 2
             .TintAndShade = 0
             .PatternTintAndShade = 0
         End With
-        .Cells(pageHead_Row, 1) = "åˆ é™¤äºï¼š" & Now
+        .Cells(pageHead_Row, 1) = "É¾³ıÓÚ£º" & Now
         .rows(pageHead_Row & ":" & pageHead_Row + pageSize - 1).Hidden = True
         
-        Call easyTmpPageDeleter(.Cells(pageHead_Row + 1, Int(getValue("å•å·åˆ—"))))
+        Call easyTmpPageDeleter(.Cells(pageHead_Row + 1, Int(getValue("µ¥ºÅÁĞ"))))
     End With
     Call editOff(sheetName)
-    Call myStatusBar("æˆåŠŸåˆ é™¤ï¼", 5)
+    Call myStatusBar("³É¹¦É¾³ı£¡", 5)
 subEnd:
     Call editOff(sheetName)
 End Sub

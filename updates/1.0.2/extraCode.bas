@@ -1,26 +1,27 @@
+Attribute VB_Name = "extraCode"
 'updated file tools code this workbookOpen
 
 
 Sub runExtraCode()
     On Error GoTo reverse
 
-    Call code.editOn("å€¼")
-    ThisWorkbook.Sheets("å€¼").Cells(39, 1) = "ä»¶æ•°åˆ—"
-    ThisWorkbook.Sheets("å€¼").Cells(39, 2) = 7
-    ThisWorkbook.Sheets("å€¼").Cells(40, 1) = "å¤‡æ³¨åˆ—"
-    ThisWorkbook.Sheets("å€¼").Cells(40, 2) = 14
-    ThisWorkbook.Sheets("å€¼").Cells(41, 1) = "æ‚è´¹åˆ—"
-    ThisWorkbook.Sheets("å€¼").Cells(41, 2) = 17
-    Call code.editOff("å€¼")
+    Call code.editOn("Öµ")
+    ThisWorkbook.Sheets("Öµ").Cells(39, 1) = "¼şÊıÁĞ"
+    ThisWorkbook.Sheets("Öµ").Cells(39, 2) = 7
+    ThisWorkbook.Sheets("Öµ").Cells(40, 1) = "±¸×¢ÁĞ"
+    ThisWorkbook.Sheets("Öµ").Cells(40, 2) = 14
+    ThisWorkbook.Sheets("Öµ").Cells(41, 1) = "ÔÓ·ÑÁĞ"
+    ThisWorkbook.Sheets("Öµ").Cells(41, 2) = 17
+    Call code.editOff("Öµ")
     
-    Call code.editOn("æ ·æœ¬")
-    ThisWorkbook.Sheets("æ ·æœ¬").Range("N42:Q45").Merge
-    ThisWorkbook.Sheets("æ ·æœ¬").Range("K5").Formula = "=IF(L5<>""å¤–ä»˜"",-I5-J5,H5-I5-J5)"
-    ThisWorkbook.Sheets("æ ·æœ¬").Range("K5").AutoFill destination:=ThisWorkbook.Sheets("æ ·æœ¬").Range("K5:K39"), Type:=xlFillDefault
-    With ThisWorkbook.Sheets("æ ·æœ¬").Range("K5:L39").Validation
+    Call code.editOn("Ñù±¾")
+    ThisWorkbook.Sheets("Ñù±¾").Range("N42:Q45").Merge
+    ThisWorkbook.Sheets("Ñù±¾").Range("K5").Formula = "=IF(L5<>""Íâ¸¶"",-I5-J5,H5-I5-J5)"
+    ThisWorkbook.Sheets("Ñù±¾").Range("K5").AutoFill destination:=ThisWorkbook.Sheets("Ñù±¾").Range("K5:K39"), Type:=xlFillDefault
+    With ThisWorkbook.Sheets("Ñù±¾").Range("K5:L39").Validation
         .Delete
         .add Type:=xlValidateList, AlertStyle:=xlValidAlertStop, Operator:= _
-        xlBetween, Formula1:="å†…ä»˜,å¤–ä»˜,å†…æ¬ ,å¤–æ¬ "
+        xlBetween, Formula1:="ÄÚ¸¶,Íâ¸¶,ÄÚÇ·,ÍâÇ·"
         .IgnoreBlank = True
         .InCellDropdown = False
         .InputTitle = ""
@@ -31,30 +32,30 @@ Sub runExtraCode()
         .ShowInput = True
         .ShowError = True
     End With
-    ThisWorkbook.Sheets("æ ·æœ¬").Columns("L:L").FormatConditions.add Type:=xlCellValue, Operator:=xlEqual, Formula1:="=""å¤–æ¬ """
-    ThisWorkbook.Sheets("æ ·æœ¬").Columns("L:L").FormatConditions(ThisWorkbook.Sheets("æ ·æœ¬").Columns("L:L").FormatConditions.count).SetFirstPriority
-    With ThisWorkbook.Sheets("æ ·æœ¬").Columns("L:L").FormatConditions(1).Font
+    ThisWorkbook.Sheets("Ñù±¾").Columns("L:L").FormatConditions.add Type:=xlCellValue, Operator:=xlEqual, Formula1:="=""ÍâÇ·"""
+    ThisWorkbook.Sheets("Ñù±¾").Columns("L:L").FormatConditions(ThisWorkbook.Sheets("Ñù±¾").Columns("L:L").FormatConditions.count).SetFirstPriority
+    With ThisWorkbook.Sheets("Ñù±¾").Columns("L:L").FormatConditions(1).Font
         .Bold = True
     End With
-    With ThisWorkbook.Sheets("æ ·æœ¬").Columns("L:L").FormatConditions(1).Interior
+    With ThisWorkbook.Sheets("Ñù±¾").Columns("L:L").FormatConditions(1).Interior
         .Pattern = xlGray25
         .PatternThemeColor = xlThemeColorAccent3
         .ColorIndex = xlAutomatic
         .PatternTintAndShade = 0
     End With
-    ThisWorkbook.Sheets("æ ·æœ¬").Columns("L:L").FormatConditions(1).StopIfTrue = False
-    ThisWorkbook.Sheets("æ ·æœ¬").Cells(1, 1) = getValue("æ¸…å•å¤´")
-    Call code.editOff("æ ·æœ¬")
+    ThisWorkbook.Sheets("Ñù±¾").Columns("L:L").FormatConditions(1).StopIfTrue = False
+    ThisWorkbook.Sheets("Ñù±¾").Cells(1, 1) = getValue("Çåµ¥Í·")
+    Call code.editOff("Ñù±¾")
     
     Call code.chgValue("v", "1.0.2")
     Call code.setVAL_D
     Dim colCounter As Integer
     colCounter = 1
-    While Len(ThisWorkbook.Sheets("ä»·æ ¼").Cells(1, colCounter)) > 0
-        code.editOn (ThisWorkbook.Sheets("ä»·æ ¼").Cells(1, colCounter).text)
-        ThisWorkbook.Sheets(ThisWorkbook.Sheets("ä»·æ ¼").Cells(1, colCounter).text).Cells(1, 1) = getValue("æ¸…å•å¤´")
-        code.editOff (ThisWorkbook.Sheets("ä»·æ ¼").Cells(1, colCounter).text)
-        colCounter = colCounter + getValue("ä»·æ ¼å•å®½åº¦")
+    While Len(ThisWorkbook.Sheets("¼Û¸ñ").Cells(1, colCounter)) > 0
+        code.editOn (ThisWorkbook.Sheets("¼Û¸ñ").Cells(1, colCounter).text)
+        ThisWorkbook.Sheets(ThisWorkbook.Sheets("¼Û¸ñ").Cells(1, colCounter).text).Cells(1, 1) = getValue("Çåµ¥Í·")
+        code.editOff (ThisWorkbook.Sheets("¼Û¸ñ").Cells(1, colCounter).text)
+        colCounter = colCounter + getValue("¼Û¸ñµ¥¿í¶È")
     Wend
 
     Debug.Print "extra code runed"
@@ -62,7 +63,7 @@ Sub runExtraCode()
     
     Exit Sub
 reverse:
-    Call MsgBox("å‡çº§å¤±è´¥ï¼Œé€€å›è‡³ä¸Šä¸ªç‰ˆæœ¬ã€‚ï¼ˆæ­£åœ¨å…³é—­å·¥ä½œç°¿ï¼Œè¯·å‹¿ä¿å­˜ï¼‰")
+    Call MsgBox("Éı¼¶Ê§°Ü£¬ÍË»ØÖÁÉÏ¸ö°æ±¾¡££¨ÕıÔÚ¹Ø±Õ¹¤×÷²¾£¬ÇëÎğ±£´æ£©")
     Application.DisplayAlerts = False
     ThisWorkbook.Close
 End Sub

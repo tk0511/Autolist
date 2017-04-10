@@ -1,3 +1,4 @@
+Attribute VB_Name = "tools"
 Sub myTimer(Optional ByVal msg As String = "")
     Static time
     If time = 0 Then
