@@ -1,4 +1,14 @@
-Public EXTRA_CODE_OK As Boolean
+Function PW() As String
+    PW = ""
+End Function
+
+Function DBID() As String
+    DBID = ""
+End Function
+
+Function DBPW() As String
+    DBPW = ""
+End Function
 
 Private Sub Workbook_Open()
     If Mid(ThisWorkbook.Name, 2, 2) = "备份" Then
@@ -23,41 +33,44 @@ Private Sub Workbook_Open()
         End If
     End If
 
-    Call update
+    Call checkUpdate
     
 End Sub
 
-Sub update()
+Sub checkUpdate()
+    On Error GoTo subEnd
+    Dim newestVersion As String
+    newestVersion = httpGET("https://raw.githubusercontent.com/tk0511/Autolist/master/Newest").responseText
+    If newerVersion(newestVersion) Then updateTo newestVersion
+subEnd:
+End Sub
+
+Sub updateTo(ByVal version As String)
     On Error GoTo reverse
-    Dim pkgName As String
-    Dim waitUntill
-    Dim fileName() As String
+    Dim modeName As String
+    Dim baseURL As String
+    Dim fileList() As String
     
-    pkgName = Dir(ThisWorkbook.PATH + "\update\*.txt")
-    If Len(pkgName) <= 0 Then Exit Sub
-    If Not newerVersion(pkgName) Then Exit Sub
-    If MsgBox("发现新版本 v" + Left(pkgName, Len(pkgName) - 4) + "，是否更新？", vbYesNo) = vbNo Then Exit Sub
+    baseURL = "https://raw.githubusercontent.com/tk0511/Autolist/master/updates/" & version & "/"
+    fileList = Split(Replace(httpGET(baseURL & "__List__").responseText, Chr(13), ""), Chr(10))
     
-    fileName = Split(Dir(ThisWorkbook.PATH + "\update\*"), ".")
-    Do While Not emptyArr(fileName)
-        If fileName(UBound(fileName)) <> "txt" And fileName(UBound(fileName)) <> "frx" Then
-            If VBExist(fileName(0)) Then
-                ThisWorkbook.VBProject.VBComponents(fileName(0)).Name = fileName(0) + "_DEL"
-            End If
-            ThisWorkbook.VBProject.VBComponents.Import (ThisWorkbook.PATH + "\update\" + Join(fileName, "."))
-            Debug.Print fileName(0) + " - updated"
-        End If
-        fileName = Split(Dir, ".")
-    Loop
-    
-    For Each component In ThisWorkbook.VBProject.VBComponents
-        If Right(component.Name, 4) = "_DEL" Then ThisWorkbook.VBProject.VBComponents.Remove component
+    For Each fileName In fileList
+        Call myDump(CStr(fileName), baseURL)
+        If Split(fileName, ".")(1) = "frm" Then Call myDumpByte(Split(fileName, ".")(0) & ".frx", baseURL)
+    Next
+
+    For Each fileName In fileList
+        modeName = Split(fileName, ".")(0)
+        If VBExist(modeName) Then ThisWorkbook.VBProject.VBComponents.Remove ThisWorkbook.VBProject.VBComponents(modeName)
+        ThisWorkbook.VBProject.VBComponents.import ThisWorkbook.PATH & "/" & fileName
     Next
     
-
-    Application.OnTime Now, "extraCode.runExtraCode"
-
+    For Each fileName In fileList
+        Kill ThisWorkbook.PATH & "/" & fileName
+        If Split(fileName, ".")(1) = "frm" Then Kill ThisWorkbook.PATH & "/" & Split(fileName, ".")(0) & ".frx"
+    Next
     
+    Application.OnTime Now, "extraCode.runExtraCode"
     Exit Sub
 reverse:
     Call MsgBox("升级失败，退回至上个版本。（请勿保存）")
@@ -65,9 +78,49 @@ reverse:
     ThisWorkbook.Close
 End Sub
 
-Function newerVersion(ByRef pkgName As String) As Boolean
+Function httpGET(ByRef url As String)
+    Dim httpREQ As Object
+    Set httpREQ = CreateObject("MSXML2.XMLHTTP.3.0")
+    httpREQ.Open "GET", url, False
+    httpREQ.send
+    If httpREQ.Status <> 200 Then Call Err.Raise(vbObjectError + 513, "httpGET", "http GET status code <> 200" & Chr(13) & "URL = " & url)
+    Set httpGET = httpREQ
+End Function
+
+Sub myDumpByte(ByRef fileName As String, ByRef baseURL As String)
+    Set S = CreateObject("ADODB.Stream")
+    S.Type = 1
+    S.Open
+    S.Write httpGET(baseURL & fileName).responseBody
+    S.SaveToFile ThisWorkbook.PATH & "/" & fileName, 2
+    S.Close
+End Sub
+
+Sub myDump(ByRef fileName As String, ByRef baseURL As String)
+    Dim text() As String
+    text = Split(httpGET(baseURL & fileName).responseText, Chr(10))
+    Set S = CreateObject("ADODB.Stream")
+    S.Type = 2
+    S.Charset = "gbk"
+    S.Open
+    For Each Line In text
+        S.WriteText Line, 1
+    Next
+    S.SaveToFile ThisWorkbook.PATH & "/" & fileName, 2
+    S.Close
+End Sub
+
+Function VBExist(ByRef Name As String) As Boolean
+    VBExist = True
+    For Each Component In ThisWorkbook.VBProject.VBComponents
+        If Component.Name = Name Then Exit Function
+    Next
+    VBExist = False
+End Function
+
+Function newerVersion(ByRef version As String) As Boolean
     newerVersion = True
-    pkgversion = Split(pkgName, ".")
+    pkgversion = Split(version, ".")
     thisversion = Split(getValue("v"), ".")
     
     If pkgversion(0) <= thisversion(0) And pkgversion(1) <= thisversion(1) And pkgversion(2) <= thisversion(2) Then
@@ -75,11 +128,4 @@ Function newerVersion(ByRef pkgName As String) As Boolean
     End If
 End Function
 
-Function VBExist(ByRef Name As String) As Boolean
-    VBExist = True
-    For Each component In ThisWorkbook.VBProject.VBComponents
-        If component.Name = Name Then Exit Function
-    Next
-    VBExist = False
-End Function
 
