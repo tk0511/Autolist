@@ -82,7 +82,8 @@ Sub new_page(Optional ByVal sheetName As String = "", Optional ByVal pageHead_Ro
 
         'Data Base
         Call easyTmpPageUploader(records, .Cells(2, Int(getValue("单号列"))), .Cells(3, Int(getValue("清单日期列"))), driver.Name, driver.add, destination, .Cells(pageHead_Row + pageSize - 5, Int(getValue("杂费列"))), .Cells(pageHead_Row + pageSize - 4, Int(getValue("备注列"))))
-
+        Call DBRetry
+            
         If destination = sheetName Or Len(destination) <= 0 Then
             .rows("1:45").Insert
             Sheet4.Range(Sheet4.Cells(1, 1), Sheet4.Cells(45, pageWidth)).Copy .Range(.Cells(1, 1), .Cells(45, pageWidth))
@@ -799,6 +800,14 @@ Sub easyTmpPageDeleter(ByVal id As String)
     Call db.disconnect
     Exit Sub
 errorProcess:
+    row = 1
+    With ThisWorkbook.Sheets("DBFailed")
+        While Len(.Cells(row, 1)) > 0
+            row = row + 1
+        Wend
+        .Cells(row, 1) = id
+        .Cells(row, 3) = "delete failed"
+    End With
     Call errPrint("easyTmpPageDeleter", "delete failed")
 End Sub
 
@@ -822,6 +831,52 @@ Sub easyTmpPageUploader(ByRef datas As Variant, ByRef pageId As String, ByRef pa
     Call db.disconnect
     Exit Sub
 errorProcess:
+    row = 1
+    With ThisWorkbook.Sheets("DBFailed")
+        While Len(.Cells(row, 1)) > 0
+            row = row + 1
+        Wend
+        .Cells(row, 1) = pageId
+        .Cells(row, 2) = destination
+        .Cells(row, 3) = "upload failed"
+    End With
     Call errPrint("easyTmpPageUploader", "upload failed")
+End Sub
+
+Sub DBRetry()
+    On Error Resume Next
+    Dim row As Integer
+    Dim pageHeadRow As Integer
+    row = 1
+    With ThisWorkbook.Sheets("DBFailed")
+        While Len(.Cells(row, 1)) > 0
+            row = row + 1
+        Wend
+        If row = 1 Then
+            Exit Sub
+        Else
+            row = row - 1
+        End If
+        rc = .Range("A1:C" & row)
+        .rows("1:" & row).Delete
+    End With
+    For i = 1 To row
+        If rc(i, 3) = "upload failed" Then
+            With ThisWorkbook.Sheets(rc(i, 2))
+                pageHeadRow = Int(.Cells(1, Int(getValue("清单长度列")))) + 1
+                While .Cells(pageHeadRow + 1, Int(getValue("单号列"))).text <> CStr(rc(i, 1)) And Int(.Cells(pageHeadRow, Int(getValue("清单长度列")))) > 0
+                    pageHeadRow = pageHeadRow + Int(.Cells(pageHeadRow, Int(getValue("清单长度列"))))
+                Wend
+
+                If .Cells(pageHeadRow, 1).text = getValue("清单头") Then
+                    
+                    Call easyTmpPageUploader(.Range(.Cells(pageHeadRow + 4, 1), .Cells(pageHeadRow + Val(.Cells(pageHeadRow, Val(getValue("清单长度列")))) - 7, Int(getValue("清单宽度")))).value, CStr(rc(i, 1)), .Cells(pageHeadRow + 2, Int(getValue("清单日期列"))), .Cells(pageHeadRow + 2, Int(getValue("驾驶员姓名列"))), .Cells(pageHeadRow + 2, Int(getValue("驾驶员车牌列"))), CStr(rc(i, 2)), Val(.Cells(pageHeadRow + Val(.Cells(pageHeadRow, Val(getValue("清单长度列")))) - 5, Int(getValue("杂费列")))), .Cells(pageHeadRow + Val(.Cells(pageHeadRow, Val(getValue("清单长度列")))) - 4, Int(getValue("备注列"))))
+                    
+                End If
+            End With
+        Else
+            Call easyTmpPageDeleter(rc(i, 1))
+        End If
+    Next
 End Sub
 
