@@ -61,8 +61,8 @@ Sub runExtraCode()
     Wend
 
 
-    Call checkImport
     Call code.chgValue("v", "1.0.2")
+    Call checkImport
     
     Application.OnTime Now, "ThisWorkbook.checkUpdate"
     Exit Sub
