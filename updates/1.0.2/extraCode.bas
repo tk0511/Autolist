@@ -4,21 +4,24 @@ Attribute VB_Name = "extraCode"
 
 Sub runExtraCode()
     On Error GoTo reverse
-
+    
+    ThisWorkbook.Sheets.add.Name = "DBFailed"
+    ThisWorkbook.Sheets("DBFailed").Visible = False
     Call code.editOn("值")
     ThisWorkbook.Sheets("值").Columns("A:C").Hidden = True
-    ThisWorkbook.Sheets("值").Cells(39, 1) = "件数列"
-    ThisWorkbook.Sheets("值").Cells(39, 2) = 7
-    ThisWorkbook.Sheets("值").Cells(40, 1) = "备注列"
-    ThisWorkbook.Sheets("值").Cells(40, 2) = 14
-    ThisWorkbook.Sheets("值").Cells(41, 1) = "杂费列"
-    ThisWorkbook.Sheets("值").Cells(41, 2) = 17
+    ThisWorkbook.Sheets("值").Cells(42, 1) = "件数列"
+    ThisWorkbook.Sheets("值").Cells(42, 2) = 7
+    ThisWorkbook.Sheets("值").Cells(43, 1) = "备注列"
+    ThisWorkbook.Sheets("值").Cells(43, 2) = 14
+    ThisWorkbook.Sheets("值").Cells(44, 1) = "杂费列"
+    ThisWorkbook.Sheets("值").Cells(44, 2) = 17
     Call code.editOff("值")
     
     Call code.editOn("样本")
     ThisWorkbook.Sheets("样本").Range("N42:Q45").Merge
     ThisWorkbook.Sheets("样本").Range("K5").Formula = "=IF(L5<>""外付"",-I5-J5,H5-I5-J5)"
     ThisWorkbook.Sheets("样本").Range("K5").AutoFill destination:=ThisWorkbook.Sheets("样本").Range("K5:K39"), Type:=xlFillDefault
+    ThisWorkbook.Sheets("样本").Range("K39").Protect = True
     With ThisWorkbook.Sheets("样本").Range("K5:L39").Validation
         .Delete
         .add Type:=xlValidateList, AlertStyle:=xlValidAlertStop, Operator:= _
@@ -80,3 +83,4 @@ Sub checkImport()
         If Len(pkg(0)) > 0 Then ThisWorkbook.VBProject.References.AddFromGuid pkg(0), pkg(1), pkg(2)
     Next
 End Sub
+

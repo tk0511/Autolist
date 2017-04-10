@@ -7,7 +7,7 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
-
+Public uploadTime As Date
 Public pageDate As Date
 Public id As String
 Public destination As String
@@ -28,6 +28,7 @@ Public payAtDestination As Currency
 
 
 Public profit As Currency
+
 
 
 

@@ -32,7 +32,7 @@ Public Sub rollback()
 End Sub
 
 Public Sub uploadPageSummery(ByRef tableName As String, ByRef r As PageSummery)
-    connection.Execute "INSERT INTO `" & tableName & "`(`pageDate`, `id`, `destination`, `driverName`, `driverCarNumber`, `freightAtDestination`, `freightAtBase`, `freightAtBaseUnpaid`, `totalFreight`, `cost`, `profit`, `freightAtDestinationUnpaid`, `note`, `unloadFee`, `transferFee`, `payAtDestination`, `totalQty`) VALUES (""" & r.pageDate & """, """ & r.id & """ ,""" & r.destination & """,""" & r.driverName & """,""" & r.driverCarNumber & """,""" & r.freightAtDestination & """,""" & r.freightAtBase & """,""" & r.freightAtBaseUnpaid & """,""" & r.totalFreight & """,""" & r.cost & """,""" & r.profit & """,""" & r.freightAtDestinationUnpaid & """,""" & r.note & """,""" & r.unloadFee & """,""" & r.transferFee & """,""" & r.payAtDestination & """,""" & r.totalQty & """)"
+    connection.Execute "INSERT INTO `" & tableName & "`(`uploadTime`, `pageDate`, `id`, `destination`, `driverName`, `driverCarNumber`, `freightAtDestination`, `freightAtBase`, `freightAtBaseUnpaid`, `totalFreight`, `cost`, `profit`, `freightAtDestinationUnpaid`, `note`, `unloadFee`, `transferFee`, `payAtDestination`, `totalQty`) VALUES (""" & r.uploadTime & """, """ & r.pageDate & """, """ & r.id & """ ,""" & r.destination & """,""" & r.driverName & """,""" & r.driverCarNumber & """,""" & r.freightAtDestination & """,""" & r.freightAtBase & """,""" & r.freightAtBaseUnpaid & """,""" & r.totalFreight & """,""" & r.cost & """,""" & r.profit & """,""" & r.freightAtDestinationUnpaid & """,""" & r.note & """,""" & r.unloadFee & """,""" & r.transferFee & """,""" & r.payAtDestination & """,""" & r.totalQty & """)"
 End Sub
 
 Public Sub uploadRecord(ByRef tableName As String, ByRef r)
@@ -84,7 +84,7 @@ Function toRecordSet(ByRef datas As Variant, ByVal pageId As String, ByVal pageD
     toRecordSet = records
 End Function
 
-Function sumRecords(ByRef records As Variant, ByRef pageId As String, ByRef pageDate As String, ByRef driverName As String, ByRef driverCarNumber As String, ByRef destination As String, ByRef cost As Currency, ByRef note As String) As PageSummery
+Function sumRecords(ByRef records As Variant, ByRef pageId As String, ByRef pageDate As String, ByRef driverName As String, ByRef driverCarNumber As String, ByRef destination As String, ByRef cost As Currency, ByRef note As String, ByRef uploadTime As String) As PageSummery
     Dim result As New PageSummery
     result.pageDate = pageDate
     result.id = pageId
@@ -116,5 +116,7 @@ Function sumRecords(ByRef records As Variant, ByRef pageId As String, ByRef page
     End If
     
     result.profit = result.totalFreight - cost
+    result.uploadTime = uploadTime
     Set sumRecords = result
 End Function
+
