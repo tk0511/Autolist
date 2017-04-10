@@ -54,16 +54,16 @@ Sub runExtraCode()
     Dim colCounter As Integer
     colCounter = 1
     While Len(ThisWorkbook.Sheets("价格").Cells(1, colCounter)) > 0
-        code.editOn (ThisWorkbook.Sheets("价格").Cells(1, colCounter).text)
+        Call code.editOn(ThisWorkbook.Sheets("价格").Cells(1, colCounter).text)
         ThisWorkbook.Sheets(ThisWorkbook.Sheets("价格").Cells(1, colCounter).text).Cells(1, 1) = getValue("清单头")
-        code.editOff (ThisWorkbook.Sheets("价格").Cells(1, colCounter).text)
+        Call code.editOff(ThisWorkbook.Sheets("价格").Cells(1, colCounter).text)
         colCounter = colCounter + getValue("价格单宽度")
     Wend
 
 
     Call checkImport
     Call code.chgValue("v", "1.0.2")
-    Call code.setVAL_D
+    
     Application.OnTime Now, "ThisWorkbook.checkUpdate"
     Exit Sub
 reverse:
