@@ -11,7 +11,7 @@ Private connection
 
 Public Sub connect(ByVal DataBase As String)
     Set connection = New ADODB.connection
-    connection.ConnectionString = "DRIVER={MySQL ODBC 5.1 Driver}; SERVER=mysql.rdsmk7l09ertw86.rds.bj.baidubce.com; DATABASE=" + DataBase + "; UID=kangtai_admin; PWD=kangtai_admin; OPTION=3"
+    connection.ConnectionString = "DRIVER={MySQL ODBC 5.1 Driver}; SERVER=mysql.rdsmk7l09ertw86.rds.bj.baidubce.com; DATABASE=" + DataBase + "; UID=" + ThisWorkbook.DBID() + "; PWD=" + ThisWorkbook.DBPW() + "; OPTION=3"
     connection.Open
 End Sub
 
@@ -96,16 +96,16 @@ Function sumRecords(ByRef records As Variant, ByRef pageId As String, ByRef page
     
     If UBound(records) > 0 Then
         For Each r In records
-            If r.payment = "Íâ¸¶" Then
+            If r.payment = "å¤–ä»˜" Then
                 result.freightAtDestination = result.freightAtDestination + r.freight
-            ElseIf r.payment = "ÄÚ¸¶" Then
+            ElseIf r.payment = "å†…ä»˜" Then
                 result.freightAtBase = result.freightAtBase + r.freight
-            ElseIf r.payment = "ÄÚÇ·" Then
+            ElseIf r.payment = "å†…æ¬ " Then
                 result.freightAtBaseUnpaid = result.freightAtBaseUnpaid + r.freight
-            ElseIf r.payment = "ÍâÇ·" Then
+            ElseIf r.payment = "å¤–æ¬ " Then
                 result.freightAtDestinationUnpaid = result.freightAtDestinationUnpaid + r.freight
             Else
-                Call MsgBox("µÚ " & r.count & " ÌõÉÏ´«Í³¼ÆÊı¾İÊ§°Ü£¡Î´Öª¸¶¿î·½Ê½£º " & r.payment)
+                Call MsgBox("ç¬¬ " & r.count & " æ¡ä¸Šä¼ ç»Ÿè®¡æ•°æ®å¤±è´¥ï¼æœªçŸ¥ä»˜æ¬¾æ–¹å¼ï¼š " & r.payment)
             End If
             result.unloadFee = result.unloadFee + r.unloadingFee
             result.transferFee = result.transferFee + r.transferFee
@@ -116,7 +116,5 @@ Function sumRecords(ByRef records As Variant, ByRef pageId As String, ByRef page
     End If
     
     result.profit = result.totalFreight - cost
-
     Set sumRecords = result
 End Function
-

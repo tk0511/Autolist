@@ -141,7 +141,7 @@ Sub editOn(Optional ByVal sheetName As String = "")
     If Len(sheetName) = 0 Then sheetName = ActiveSheet.Name
     Application.ScreenUpdating = False
     Application.EnableEvents = False
-    ThisWorkbook.Sheets(sheetName).Unprotect Password:="0511/*"
+    ThisWorkbook.Sheets(sheetName).Unprotect Password:=ThisWorkbook.PW()
 End Sub
 
 Sub editOff(Optional ByVal sheetName As String = "")
@@ -149,7 +149,7 @@ Sub editOff(Optional ByVal sheetName As String = "")
     ThisWorkbook.Sheets(sheetName).Calculate
     Application.ScreenUpdating = True
     Application.EnableEvents = True
-    ThisWorkbook.Sheets(sheetName).Protect Password:="0511/*", DrawingObjects:=False, Contents:=True, Scenarios:=False
+    ThisWorkbook.Sheets(sheetName).Protect Password:=ThisWorkbook.PW(), DrawingObjects:=False, Contents:=True, Scenarios:=False
 End Sub
 
 Sub delete_page(Optional ByVal sheetName As String = "", Optional ByVal pageHead_Row As Integer = 1, Optional ByVal verify As Boolean = True)
