@@ -81,8 +81,9 @@ Sub new_page(Optional ByVal sheetName As String = "", Optional ByVal pageHead_Ro
         .Cells(2, Int(getValue("单号列"))) = getId
 
         'Data Base
-        Call easyTmpPageUploader(records, .Cells(2, Int(getValue("单号列"))), .Cells(3, Int(getValue("清单日期列"))), driver.Name, driver.add, destination, .Cells(pageHead_Row + pageSize - 5, Int(getValue("杂费列"))), .Cells(pageHead_Row + pageSize - 4, Int(getValue("备注列"))), Now)
         Call DBRetry
+        Call easyTmpPageUploader(records, .Cells(2, Int(getValue("单号列"))), .Cells(3, Int(getValue("清单日期列"))), driver.Name, driver.add, destination, .Cells(pageHead_Row + pageSize - 5, Int(getValue("杂费列"))), .Cells(pageHead_Row + pageSize - 4, Int(getValue("备注列"))), Now)
+        
             
         If destination = sheetName Or Len(destination) <= 0 Then
             .rows("1:45").Insert

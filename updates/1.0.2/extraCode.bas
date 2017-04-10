@@ -21,7 +21,7 @@ Sub runExtraCode()
     ThisWorkbook.Sheets("样本").Range("N42:Q45").Merge
     ThisWorkbook.Sheets("样本").Range("K5").Formula = "=IF(L5<>""外付"",-I5-J5,H5-I5-J5)"
     ThisWorkbook.Sheets("样本").Range("K5").AutoFill destination:=ThisWorkbook.Sheets("样本").Range("K5:K39"), Type:=xlFillDefault
-    ThisWorkbook.Sheets("样本").Range("K39").Protect = True
+    ThisWorkbook.Sheets("样本").Range("K39").Locked = True
     With ThisWorkbook.Sheets("样本").Range("K5:L39").Validation
         .Delete
         .add Type:=xlValidateList, AlertStyle:=xlValidAlertStop, Operator:= _
