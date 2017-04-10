@@ -4,7 +4,9 @@ Attribute VB_Name = "extraCode"
 
 Sub runExtraCode()
     On Error GoTo reverse
-
+    
+    ThisWorkbook.Sheets.add.Name = "DBFailed"
+    ThisWorkbook.Sheets("DBFailed").Visible = False
     Call code.editOn("值")
     ThisWorkbook.Sheets("值").Columns("A:C").Hidden = True
     ThisWorkbook.Sheets("值").Cells(39, 1) = "件数列"
