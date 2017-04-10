@@ -56,7 +56,10 @@ Sub updateTo(ByVal version As String)
 
     For Each fileName In fileList
         modeName = Split(fileName, ".")(0)
-        If VBExist(modeName) Then ThisWorkbook.VBProject.VBComponents.Remove ThisWorkbook.VBProject.VBComponents(modeName)
+        If VBExist(modeName) Then
+            ThisWorkbook.VBProject.VBComponents(modeName).Name = modeName & "_DEL"
+            ThisWorkbook.VBProject.VBComponents.Remove ThisWorkbook.VBProject.VBComponents(modeName & "_DEL")
+        End If
         ThisWorkbook.VBProject.VBComponents.import ThisWorkbook.PATH & "/" & fileName
     Next
     
