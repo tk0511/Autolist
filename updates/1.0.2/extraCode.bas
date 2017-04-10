@@ -22,7 +22,7 @@ Sub runExtraCode()
     ThisWorkbook.Sheets("样本").Range("K5").Formula = "=IF(L5<>""外付"",-I5-J5,H5-I5-J5)"
     ThisWorkbook.Sheets("样本").Range("K5").AutoFill destination:=ThisWorkbook.Sheets("样本").Range("K5:K39"), Type:=xlFillDefault
     ThisWorkbook.Sheets("样本").Range("K39").Locked = True
-    With ThisWorkbook.Sheets("样本").Range("K5:L39").Validation
+    With ThisWorkbook.Sheets("样本").Range("L5:L39").Validation
         .Delete
         .add Type:=xlValidateList, AlertStyle:=xlValidAlertStop, Operator:= _
         xlBetween, Formula1:="内付,外付,内欠,外欠"
