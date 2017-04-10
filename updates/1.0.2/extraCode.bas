@@ -9,12 +9,12 @@ Sub runExtraCode()
     ThisWorkbook.Sheets("DBFailed").Visible = False
     Call code.editOn("值")
     ThisWorkbook.Sheets("值").Columns("A:C").Hidden = True
-    ThisWorkbook.Sheets("值").Cells(39, 1) = "件数列"
-    ThisWorkbook.Sheets("值").Cells(39, 2) = 7
-    ThisWorkbook.Sheets("值").Cells(40, 1) = "备注列"
-    ThisWorkbook.Sheets("值").Cells(40, 2) = 14
-    ThisWorkbook.Sheets("值").Cells(41, 1) = "杂费列"
-    ThisWorkbook.Sheets("值").Cells(41, 2) = 17
+    ThisWorkbook.Sheets("值").Cells(42, 1) = "件数列"
+    ThisWorkbook.Sheets("值").Cells(42, 2) = 7
+    ThisWorkbook.Sheets("值").Cells(43, 1) = "备注列"
+    ThisWorkbook.Sheets("值").Cells(43, 2) = 14
+    ThisWorkbook.Sheets("值").Cells(44, 1) = "杂费列"
+    ThisWorkbook.Sheets("值").Cells(44, 2) = 17
     Call code.editOff("值")
     
     Call code.editOn("样本")
