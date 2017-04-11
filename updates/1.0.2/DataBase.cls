@@ -16,7 +16,9 @@ Public Sub connect(ByVal DataBase As String)
 End Sub
 
 Public Sub disconnect()
-    connection.Close
+    If connection.state <> 0 Then
+        connection.Close
+    End If
 End Sub
 
 Public Sub openTrans()
@@ -45,6 +47,10 @@ End Sub
 
 Function errors()
     Set errors = connection.errors
+End Function
+
+Function state()
+    state = connection.state
 End Function
 
 Function toRecordSet(ByRef datas As Variant, ByVal pageId As String, ByVal pageDate As String, ByVal driverName As String, ByVal driverCarNumber As String, ByVal destination As String) As Record()
@@ -124,3 +130,10 @@ Function sumRecords(ByRef records As Variant, ByRef pageId As String, ByRef page
     Set sumRecords = result
 End Function
 
+Private Sub Class_Initialize()
+    Set connection = New ADODB.connection
+End Sub
+
+Private Sub Class_Terminate()
+    If connection.state <> 0 Then Call disconnect
+End Sub
