@@ -832,13 +832,15 @@ Sub easyTmpPageUploader(ByRef datas As Variant, ByRef pageId As String, ByRef pa
     Call db.disconnect
     Exit Sub
 errorProcess:
-    If db.errors.count = 1 Then
-        If db.errors(0).NativeError = 1062 Then
-            Call easyTmpPageDeleter(pageId)
-            Call easyTmpPageUploader(datas, pageId, pageDate, driverName, driverCarNumber, 
-
-destination, cost, note, uploadTime)
-            Exit Sub
+    If db.errors <> Nothing Then
+        If db.errors.count = 1 Then
+            If db.errors(0).NativeError = 1062 Then
+                Call db.rollback
+                Call db.disconnect
+                Call easyTmpPageDeleter(pageId)
+                Call easyTmpPageUploader(datas, pageId, pageDate, driverName, driverCarNumber, destination, cost, note, uploadTime)
+                Exit Sub
+            End If
         End If
     End If
     row = 1
