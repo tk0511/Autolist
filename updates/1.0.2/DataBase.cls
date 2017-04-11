@@ -43,6 +43,10 @@ Sub deleteDataById(ByRef tableName As String, ByRef id As String)
     connection.Execute "DELETE FROM `" & tableName & "` WHERE `id`=""" & id & """;"
 End Sub
 
+Function errors()
+    Set errors = connection.errors
+End Function
+
 Function toRecordSet(ByRef datas As Variant, ByVal pageId As String, ByVal pageDate As String, ByVal driverName As String, ByVal driverCarNumber As String, ByVal destination As String) As Record()
     Dim records() As Record
     Dim i As Integer
