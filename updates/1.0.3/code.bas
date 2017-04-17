@@ -82,7 +82,7 @@ Sub new_page(Optional ByVal sheetName As String = "", Optional ByVal pageHead_Ro
 
         'Data Base
         Call DBRetry
-        Call easyTmpPageUploader(records, .Cells(2, Int(getValue("单号列"))), .Cells(3, Int(getValue("清单日期列"))), driver.Name, driver.add, destination, .Cells(pageHead_Row + pageSize - 5, Int(getValue("出车费用列"))), .Cells(pageHead_Row + pageSize - 4, Int(getValue("备注列"))), Now, .Cells(pageHead_Row + pageSize - 5, Int(getValue("杂费列"))))
+        Call easyTmpPageUploader(records, .Cells(2, Int(getValue("单号列"))), .Cells(3, Int(getValue("清单日期列"))), driver.Name, driver.add, destination, .Cells(pageHead_Row + pageSize - 5, Int(getValue("出车费用列"))), .Cells(pageHead_Row + pageSize - 4, Int(getValue("备注列"))), Now, .Cells(pageHead_Row + pageSize - 5, Int(getValue("杂费列"))), .Cells(pageHead_Row + pageSize - 5, Int(getValue("杂费列")) - 1))
         
             
         If destination = sheetName Or Len(destination) <= 0 Then
@@ -286,7 +286,7 @@ Function getRow(ByVal value As String, ByVal row As Integer, ByVal sheetName As 
             getRow = row
             Exit Function
         End If
-        Set target = .Columns(col).Find(value, After:=.Cells(row, col), lookat:=xlPart)
+        Set target = .Columns(col).Find(value, After:=.Cells(row, col), lookat:=xlWhole)
     End With
     
     If target Is Nothing Then
@@ -793,7 +793,7 @@ End Sub
 Sub easyTmpPageDeleter(ByVal id As String)
     On Error GoTo errorProcess
     Dim db As New DataBase
-    Call db.connect("kangtai")
+    Call db.connect
     Call db.openTrans
     Call db.deleteDataById("tmp_detailed_record", id)
     Call db.deleteDataById("tmp_general_record", id)
@@ -813,12 +813,12 @@ errorProcess:
     Call errPrint("easyTmpPageDeleter", "delete failed")
 End Sub
 
-Sub easyTmpPageUploader(ByRef datas As Variant, ByRef pageId As String, ByRef pageDate As String, ByRef driverName As String, ByRef driverCarNumber As String, ByRef destination As String, ByRef cost As Currency, ByRef note As String, ByRef uploadTime As String, ByRef extraCost As Currency)
+Sub easyTmpPageUploader(ByRef datas As Variant, ByRef pageId As String, ByRef pageDate As String, ByRef driverName As String, ByRef driverCarNumber As String, ByRef destination As String, ByRef cost As Currency, ByRef note As String, ByRef uploadTime As String, ByRef extraCost As Currency, ByRef extraCostDesc As String)
     On Error GoTo errorProcess
     Dim db As New DataBase
     Dim records() As Record
     records = db.toRecordSet(datas, pageId, pageDate, driverName, driverCarNumber, destination)
-    Call db.connect("kangtai")
+    Call db.connect
     Call db.openTrans
     
     
@@ -826,7 +826,7 @@ Sub easyTmpPageUploader(ByRef datas As Variant, ByRef pageId As String, ByRef pa
         Call db.uploadRecord("tmp_detailed_record", records(row))
     Next
     
-    Call db.uploadPageSummery("tmp_general_record", db.sumRecords(records, pageId, pageDate, driverName, driverCarNumber, destination, cost, note, uploadTime, extraCost))
+    Call db.uploadPageSummery("tmp_general_record", db.sumRecords(records, pageId, pageDate, driverName, driverCarNumber, destination, cost, note, uploadTime, extraCost, extraCostDesc))
     
     
     Call db.commit
@@ -838,7 +838,7 @@ errorProcess:
         If db.errors(0).NativeError = 1062 Then
             Call db.disconnect
             Call easyTmpPageDeleter(pageId)
-            Call easyTmpPageUploader(datas, pageId, pageDate, driverName, driverCarNumber, destination, cost, note, uploadTime, extraCost)
+            Call easyTmpPageUploader(datas, pageId, pageDate, driverName, driverCarNumber, destination, cost, note, uploadTime, extraCost, extraCostDesc)
             Exit Sub
         End If
     End If
@@ -882,7 +882,7 @@ Sub DBRetry()
 
                 If .Cells(pageHeadRow, 1).text = getValue("清单头") Then
                     
-                    Call easyTmpPageUploader(.Range(.Cells(pageHeadRow + 4, 1), .Cells(pageHeadRow + Val(.Cells(pageHeadRow, Val(getValue("清单长度列")))) - 7, Int(getValue("清单宽度")))).value, CStr(rc(i, 1)), .Cells(pageHeadRow + 2, Int(getValue("清单日期列"))), .Cells(pageHeadRow + 2, Int(getValue("驾驶员姓名列"))), .Cells(pageHeadRow + 2, Int(getValue("驾驶员车牌列"))), CStr(rc(i, 2)), Val(.Cells(pageHeadRow + Val(.Cells(pageHeadRow, Val(getValue("清单长度列")))) - 5, Int(getValue("出车费用列")))), .Cells(pageHeadRow + Val(.Cells(pageHeadRow, Val(getValue("清单长度列")))) - 4, Int(getValue("备注列"))), CStr(rc(i, 4)), Val(.Cells(pageHeadRow + Val(.Cells(pageHeadRow, Val(getValue("清单长度列")))) - 5, Int(getValue("杂费列")))))
+                    Call easyTmpPageUploader(.Range(.Cells(pageHeadRow + 4, 1), .Cells(pageHeadRow + Val(.Cells(pageHeadRow, Val(getValue("清单长度列")))) - 7, Int(getValue("清单宽度")))).value, CStr(rc(i, 1)), .Cells(pageHeadRow + 2, Int(getValue("清单日期列"))), .Cells(pageHeadRow + 2, Int(getValue("驾驶员姓名列"))), .Cells(pageHeadRow + 2, Int(getValue("驾驶员车牌列"))), CStr(rc(i, 2)), Val(.Cells(pageHeadRow + Val(.Cells(pageHeadRow, Val(getValue("清单长度列")))) - 5, Int(getValue("出车费用列")))), .Cells(pageHeadRow + Val(.Cells(pageHeadRow, Val(getValue("清单长度列")))) - 4, Int(getValue("备注列"))), CStr(rc(i, 4)), Val(.Cells(pageHeadRow + Val(.Cells(pageHeadRow, Val(getValue("清单长度列")))) - 5, Int(getValue("杂费列")))), .Cells(pageHeadRow + Val(.Cells(pageHeadRow, Val(getValue("清单长度列")))) - 5, Int(getValue("杂费列")) - 1))
                     
                 End If
             End With
@@ -897,9 +897,34 @@ Sub deleteDBFail()
     i = 1
     With ThisWorkbook.Sheets("DBFailed")
         While Len(.Cells(i, 1)) > 0 And .Cells(i, 3).text = "upload failed"
-            If Now - .Cells(i, 4) > 2 Then .rows(i).Delete
+            If Now - .Cells(i, 4) > 7 Then .rows(i).Delete
             i = i + 1
         Wend
     End With
 End Sub
 
+Sub config()
+    s = InputBox("ID head:", "config")
+    If Len(s) > 0 Then Call chgValue("单号头", s)
+    Debug.Print "单号头:" & s
+    
+    s = InputBox("DBADD:", "config")
+    If Len(s) > 0 Then Call chgValue("DBADD", s)
+    Debug.Print "DBADD:" & s
+    
+    s = InputBox("DB:", "config")
+    If Len(s) > 0 Then Call chgValue("DB", s)
+    Debug.Print "DB:" & s
+    
+    s = InputBox("DBID:", "config")
+    If Len(s) > 0 Then Call chgValue("DBID", s)
+    Debug.Print "DBID:" & s
+    
+    s = InputBox("DBPW:", "config")
+    If Len(s) > 0 Then Call chgValue("DBPW", s)
+    Debug.Print "DBPW:" & s
+    
+    s = InputBox("Page head:", "config")
+    If Len(s) > 0 Then Call chgValue("清单头", s)
+    Debug.Print "清单头:" & s
+End Sub

@@ -6,6 +6,12 @@ Sub runExtraCode()
     On Error GoTo reverse
     
 
+    Call editOn("值")
+    ThisWorkbook.Sheets("值").Cells(45, 1) = "DBADD"
+    ThisWorkbook.Sheets("值").Cells(45, 2) = "mysql.rdsmk7l09ertw86.rds.bj.baidubce.com"
+    ThisWorkbook.Sheets("值").Cells(46, 1) = "DB"
+    ThisWorkbook.Sheets("值").Cells(46, 2) = "kangtai"
+    Call editOff("值")
     Call editOn("样本")
     ThisWorkbook.Sheets("样本").Cells(41, 1).Formula = "=IF((SUMIF(L5:L39,""外付"",H5:H39)-SUM(I5:I39)-SUM(J5:J39))=SUM(K5:K39),""合计外收 ""&SUM(K5:K39)&"" 元 - ""&P41&"" ""& Q41 &"" 元""&"" = "" &IF(SUM(K5:K39)-Q41>0,""退运费 "",""付运费 "")&ABS(SUM(K5:K39)-Q41)&"" 元"","""")"
     ThisWorkbook.Sheets("样本").Columns("S:Z").Interior.ThemeColor = xlThemeColorDark1
@@ -43,5 +49,6 @@ Sub checkImport()
         If Len(pkg(0)) > 0 Then ThisWorkbook.VBProject.References.AddFromGuid pkg(0), pkg(1), pkg(2)
     Next
 End Sub
+
 
 

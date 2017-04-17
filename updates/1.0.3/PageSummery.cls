@@ -15,6 +15,7 @@ Public driverName As String
 Public driverCarNumber As String
 Public cost As Currency
 Public extraCost As Currency
+Public extraCostDesc As String
 Public note As String
 
 Public freightAtDestination As Currency
@@ -29,6 +30,7 @@ Public payAtDestination As Currency
 
 
 Public profit As Currency
+
 
 
 

@@ -9,9 +9,9 @@ Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 Private connection
 
-Public Sub connect(ByVal DataBase As String)
+Public Sub connect()
     Set connection = New ADODB.connection
-    connection.ConnectionString = "DRIVER={MySQL ODBC 5.1 Driver}; SERVER=mysql.rdsmk7l09ertw86.rds.bj.baidubce.com; DATABASE=" + DataBase + "; UID=" + getValue("DBID") + "; PWD=" + getValue("DBPW") + "; OPTION=3"
+    connection.ConnectionString = "DRIVER={MySQL ODBC 5.1 Driver}; SERVER=" + getValue("DBADD") + "; DATABASE=" + getValue("DB") + "; UID=" + getValue("DBID") + "; PWD=" + getValue("DBPW") + "; OPTION=3"
     connection.Open
 End Sub
 
@@ -34,7 +34,7 @@ Public Sub rollback()
 End Sub
 
 Public Sub uploadPageSummery(ByRef tableName As String, ByRef r As PageSummery)
-    connection.Execute "INSERT INTO `" & tableName & "`(`uploadTime`, `pageDate`, `id`, `destination`, `driverName`, `driverCarNumber`, `freightAtDestination`, `freightAtBase`, `freightAtBaseUnpaid`, `totalFreight`, `cost`, `profit`, `freightAtDestinationUnpaid`, `note`, `unloadFee`, `transferFee`, `payAtDestination`, `totalQty`, `extraCost`) VALUES (""" & r.uploadTime & """, """ & r.pageDate & """, """ & r.id & """ ,""" & r.destination & """,""" & r.driverName & """,""" & r.driverCarNumber & """,""" & r.freightAtDestination & """,""" & r.freightAtBase & """,""" & r.freightAtBaseUnpaid & """,""" & r.totalFreight & """,""" & r.cost & """,""" & r.profit & """,""" & r.freightAtDestinationUnpaid & """,""" & r.note & """,""" & r.unloadFee & """,""" & r.transferFee & """,""" & r.payAtDestination & """,""" & r.totalQty & """,""" & r.extraCost & """)"
+    connection.Execute "INSERT INTO `" & tableName & "`(`uploadTime`, `pageDate`, `id`, `destination`, `driverName`, `driverCarNumber`, `freightAtDestination`, `freightAtBase`, `freightAtBaseUnpaid`, `totalFreight`, `cost`, `profit`, `freightAtDestinationUnpaid`, `note`, `unloadFee`, `transferFee`, `payAtDestination`, `totalQty`, `extraCost`, `extraCostDesc`) VALUES (""" & r.uploadTime & """, """ & r.pageDate & """, """ & r.id & """ ,""" & r.destination & """,""" & r.driverName & """,""" & r.driverCarNumber & """,""" & r.freightAtDestination & """,""" & r.freightAtBase & """,""" & r.freightAtBaseUnpaid & """,""" & r.totalFreight & """,""" & r.cost & """,""" & r.profit & """,""" & r.freightAtDestinationUnpaid & """,""" & r.note & """,""" & r.unloadFee & """,""" & r.transferFee & """,""" & r.payAtDestination & """,""" & r.totalQty & """,""" & r.extraCost & """,""" & r.extraCostDesc & """)"
 End Sub
 
 Public Sub uploadRecord(ByRef tableName As String, ByRef r)
@@ -94,7 +94,7 @@ Function toRecordSet(ByRef datas As Variant, ByVal pageId As String, ByVal pageD
     toRecordSet = records
 End Function
 
-Function sumRecords(ByRef records As Variant, ByRef pageId As String, ByRef pageDate As String, ByRef driverName As String, ByRef driverCarNumber As String, ByRef destination As String, ByRef cost As Currency, ByRef note As String, ByRef uploadTime As String, ByRef extraCost As Currency) As PageSummery
+Function sumRecords(ByRef records As Variant, ByRef pageId As String, ByRef pageDate As String, ByRef driverName As String, ByRef driverCarNumber As String, ByRef destination As String, ByRef cost As Currency, ByRef note As String, ByRef uploadTime As String, ByRef extraCost As Currency, ByRef extraCostDesc As String) As PageSummery
     Dim result As New PageSummery
     result.pageDate = pageDate
     result.id = pageId
@@ -103,6 +103,7 @@ Function sumRecords(ByRef records As Variant, ByRef pageId As String, ByRef page
     result.driverCarNumber = drivercarname
     result.cost = cost
     result.extraCost = extraCost
+    result.extraCostDesc = extraCostDesc
     result.note = note
     
     If UBound(records) > 0 Then
@@ -138,4 +139,5 @@ End Sub
 Private Sub Class_Terminate()
     If connection.state <> 0 Then Call disconnect
 End Sub
+
 
